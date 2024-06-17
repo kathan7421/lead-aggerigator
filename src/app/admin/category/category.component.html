@@ -1,0 +1,70 @@
+
+<p-button (click)="showDialog()" label="Add Category +"></p-button>
+<p-dialog header="{{ isEditMode ? 'Edit Category' : 'Add New Category' }}" [modal]="true" [(visible)]="visible" [style]="{ width: '50em' }">
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="name" class="font-semibold w-6rem">Name</label>
+            <input pInputText id="name" formControlName="name" class="flex-auto" autocomplete="off" />
+            <div *ngIf="categoryForm.controls['name'].invalid && categoryForm.controls['name'].touched" class="text-danger">
+                Name is required
+            </div>
+        </div>
+        
+        <div class="flex align-items-center gap-3 mb-3">
+            <input type="file" (change)="onFileChange($event)" accept="image/*" formControlName="image" />
+            <div *ngIf="categoryForm.controls['image'].invalid && categoryForm.controls['image'].touched && !isEditMode" class="text-danger">
+                Image is required
+            </div>
+            <div *ngIf="imagePreviewUrl">
+                <img [src]="imagePreviewUrl" alt="Preview Image">
+              </div>
+            
+        </div>
+        
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="description" class="font-semibold w-6rem">Description</label>
+            <textarea pInputText id="description" formControlName="description" class="flex-auto" autocomplete="off"></textarea>
+            <div *ngIf="categoryForm.controls['description'].invalid && categoryForm.controls['description'].touched" class="text-danger">
+                Description is required.
+            </div>
+        </div>
+        
+        <div class="flex justify-content-end gap-2">
+            <p-button *ngIf="!isEditMode" label="Save" type="submit"></p-button>
+            <p-button *ngIf="isEditMode" label="Update" type="submit"></p-button>
+        </div>
+    </form>
+</p-dialog> 
+<!-- new form end -->
+
+<!-- data grid table  -->
+<div>
+<p-table [value]="categories" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Index</th>
+            <th pSortableColumn="id">Category ID <p-sortIcon field="id"></p-sortIcon></th>
+            <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+            <th>Image</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-category let-i="rowIndex">
+        <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ category.id }}</td>
+            <td>{{ category.name }}</td>
+            <img [src]="category.image" alt="Category Image">
+
+            <td>
+                <p-inputSwitch class="switch" [ngModel]="category.status === '0'" (onChange)="onToggleChange(category.id, $event.checked)"></p-inputSwitch>
+            </td>
+            <td>
+                <button class="btn btn-primary" (click)="openEditDialog(category.id)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger" (click)="deleteCategory(category.id)"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+</div>

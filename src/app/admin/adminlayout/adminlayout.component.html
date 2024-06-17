@@ -1,0 +1,33 @@
+<ng-container *ngIf="!isLoginPage()">
+    <app-layout></app-layout>
+    <div class="d-flex">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>{{ getTitle() }}</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a [routerLink]="['/admin/dashboard']">Home</a></li>
+                <li class="breadcrumb-item active">{{ getTitle() }}</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="content">
+        <router-outlet></router-outlet>
+      </section>
+    </div>
+    <app-admin-footer></app-admin-footer>
+  </ng-container>
+  
+  <!-- Define the login component route -->
+  <router-outlet *ngIf="isLoginPage()"></router-outlet>
+  
+  
