@@ -1,4 +1,9 @@
 /* styles.css */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import "~admin-lte/dist/css/adminlte.min.css";
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
+
 .switch .p-inputswitch-slider {
     background-color: red !important;
 }
@@ -20,3 +25,7 @@ section.content {
     width: 100% !important;
     user-select: none;
 }
+.fakeimg {
+    height: 200px;
+    background: #aaa;
+  }

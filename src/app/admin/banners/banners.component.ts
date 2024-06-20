@@ -4,6 +4,8 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { BannersService } from './banners.service';
 import { ToastrService } from 'ngx-toastr';
 import { Banners } from './banners.model';
+import { AuthService } from 'src/app/auth-service.service';
+import Swal from 'sweetalert2';
 import { error } from 'jquery';
 
 
@@ -14,61 +16,185 @@ import { error } from 'jquery';
 })
 export class BannersComponent implements OnInit {
   bannerForm! : FormGroup;
-  uploadedImageUrl!: string;
+  banners: Banners[] = [];
+  imagePreviewUrl: string | ArrayBuffer = '';
   visible: boolean = false;
   isEditMode: boolean = false;
-  base64textString: string | null = null;
-  constructor(public dialogService: DialogService ,private fb: FormBuilder,private bannerService: BannersService,private toastr: ToastrService) { 
+  selectedFile: File | null = null;
+  selectedBanner!: Banners;
+  constructor(public dialogService: DialogService ,private fb: FormBuilder,private bannerService: BannersService,private toastr: ToastrService,private authService:AuthService) { 
 this.bannerForm = this.fb.group({
   title: ['', Validators.required],
-  image: ['',Validators.required],
+  image: [''],
   button_text	: [''],
   priority: [''],
   slug: [''],
   description: ['', Validators.required],
 });
+// Set validators for image control based on edit mode
+this.bannerForm.get('image')?.setValidators(this.isEditMode ? null : Validators.required);
+this.bannerForm.get('image')?.updateValueAndValidity();
 }
 ngOnInit(): void {
+  
+  this.loadBanners();
   }
-  onFileChange(event: any): void {
-    const files = event.target.files;
-    const file = files[0];
-
-    if (files && file) {
+  onFileChange(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
       const reader = new FileReader();
-
       reader.onload = () => {
-        this.base64textString = reader.result as string;
-        this.bannerForm.patchValue({ image: this.base64textString });
-        this.uploadedImageUrl = this.base64textString;
+        if (reader.result) {
+          this.imagePreviewUrl = reader.result as string;
+        }
       };
-
       reader.readAsDataURL(file);
     }
   }
-  
-  onSubmit(): void {
-    if(this.bannerForm.valid){
-      const productValue: Banners = this.bannerForm.value;
-
-      this.bannerService.addBanner(productValue).subscribe(
-        response => {
-          this.toastr.success('Banner Added Successfully','Success');
-          this.visible = false;
+  openEditDialog(bannerId: number) {
+    this.bannerService.getBannerById(bannerId).subscribe(
+      (response: { data: Banners }) => {
+        this.selectedBanner = response.data;
+        this.isEditMode = true;
+        this.bannerForm.patchValue({
+          title: this.selectedBanner.title,
+          priority: this.selectedBanner.priority,
+          button_text: this.selectedBanner.button_text,
+          description: this.selectedBanner.description,
+          image: ''
+        });
+        this.imagePreviewUrl = this.selectedBanner.image;
+        this.selectedFile = null; // Reset selected file
+        // this.uploadedImageUrl = null; // Reset uploaded image URL
+        this.visible = true;
+        this.bannerForm.get('image')?.clearValidators();
+        this.bannerForm.get('image')?.updateValueAndValidity();
+      },
+      (error) => {
+        this.toastr.error('Something went wrong', 'Error');
+      }
+    );
+  }
+  loadBanners(): void {
+    if (this.authService.isLoggedIn()) {
+      this.bannerService.getBanners().subscribe(
+        (response) => {
+          this.banners = response.banners; // Update to match the structure of the API response
         },
-        error => {
-          this.toastr.error('Some thing went wrong ','Error');
-
+        (error) => {
+          console.error('Error fetching banners:', error);
         }
-      )
+      );
     }
-
   }
-  showDialog() {    
-    this.bannerForm.reset();
+  onSubmit(): void {
+    this.bannerForm.markAllAsTouched();
+    if (this.bannerForm.valid) {
+      const formData: Banners = this.bannerForm.value;
+      
+      if (this.isEditMode) {
+        if (this.selectedFile) {
+          const reader = new FileReader();
+          reader.onload = () => {
+            formData.image = reader.result as string; // Ensure reader.result is treated as string
+            this.submitForm(formData);
+          };
+          reader.readAsDataURL(this.selectedFile);
+        } else {
+          formData.image = '';  // Set image value to empty string if not uploading a new image during editing
+          this.submitForm(formData);
+        }
+      } else {
+        // If it's not in edit mode, directly use imagePreviewUrl
+        formData.image = this.imagePreviewUrl as string; // Cast imagePreviewUrl as string
+        this.submitForm(formData);
+        this.bannerForm.markAllAsTouched();
+      }
+    }
+  }
+submitForm(formData:any){
+  if(this.isEditMode){
+    this.bannerService.upateBanners(this.selectedBanner.id,formData).subscribe(
+     (response) => {
+      this.toastr.success('Banner updated successfully', 'Success');
+      this.closeDialog();
+      this.loadBanners();
+     },
+     (error) => {
+      this.toastr.error('Something went wrong', 'Error');
+     }
+    );
+
+}else{
+  this.bannerService.addBanner(formData).subscribe(
+    (response) => {
+      this.toastr.success('Banner added successfully', 'Success');
+      this.closeDialog();
+      this.loadBanners();
+},
+(error) => {
+  this.toastr.error('Something Went Wrong','error');
+}
+  );
+}
+ 
+}
+  
+  
+  showDialog() {
     this.visible = true;
-    // this.productForm.get('category_id')!.setValue('0');
     this.isEditMode = false;
+    this.bannerForm.reset();
+    this.imagePreviewUrl = '';
+    this.selectedFile = null; // Reset selected file
   }
-
+  
+  
+closeDialog() {
+    this.visible = false;
+    this.bannerForm.reset();
+    this.imagePreviewUrl = '';
+    this.isEditMode = false;
+    this.selectedFile = null; // Reset selected file to null
+    // this.uploadedImageUrl = null;
+    this.bannerForm.get('image')?.setValidators(this.isEditMode ? null : Validators.required);
+    this.bannerForm.get('image')?.updateValueAndValidity();
+  }
+  deleteBanner(bannerId:number) : void {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'You will not be able to recover this Banner!',
+      icon: 'warning',
+      showCancelButton:true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.bannerService.deleteBanner(bannerId).subscribe(
+          response => {
+            this.loadBanners();
+            Swal.fire('Deleted!', 'Banner has been deleted.', 'success');
+          },
+          error => {
+            Swal.fire('Error!','Failed to delete the Banner.','error');
+    }
+  );
+} else if (result.dismiss === Swal.DismissReason.cancel) {
+  Swal.fire('Cancelled', 'The Banner is safe :)', 'info');
+}
+    });
+}
+changeBannerStatus(bannerId:number,checked:boolean): void {
+  const newStatus =  checked ? 1 : 0;
+  this.bannerService.updateBannerStatus(bannerId,newStatus).subscribe(
+    (response: Banners) => {
+      const message = newStatus === 1 ? 'You have made the status Active' : 'You have made the status Inactive';
+      this.toastr.success(message,'Banner Status updated Successfully');
+    },
+    error => {
+     this.toastr.error('Something Went Wrong',error);
+    }
+  )
+}
 }

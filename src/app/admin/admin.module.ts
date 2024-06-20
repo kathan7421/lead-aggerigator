@@ -3,28 +3,27 @@ import { NgModule } from '@angular/core';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { CommonModule } from '@angular/common';
-// import { AdminRoutingModule } from './admin-routing.module';
-import { LoginComponent } from './login/login.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { NotFoundComponent } from './not-found/not-found.component';
-// import { AdminlayoutComponent } from './adminlayout/adminlayout.component';
-// import { AdminLayoutComponent }
-// import { SharedModule } from '../shared/shared.module';
-// import { LayoutComponent } from '../shared/admin-layout/layout/layout.component';
-// import { SidebarComponent } from '../shared/admin-layout/sidebar/sidebar.component';
-// import { AdminFooterComponent } from '../shared/admin-layout/footer/footer.component';
 import { SharedModule } from '../shared/shared.module';
+import { ForgotPasswordComponent } from './forget-password/forget-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import {FormsModule, ReactiveFormsModule , } from '@angular/forms';
+// import { CmsComponent } from './cms/cms.component';
+import { EditorModule } from 'primeng/editor';
+import { CompanyComponent } from './company/company.component';
 @NgModule({
   declarations: [
-    //  AdminlayoutComponent,
-    //  LayoutComponent,
-    //  SidebarComponent,
-    // AdminFooterComponent
+   ForgotPasswordComponent,
+   ResetPasswordComponent,
+   CompanyComponent,
+  //  CmsComponent,
   ],
   imports: [
     CommonModule,
     AdminRoutingModule,
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
+    EditorModule
   ]
 })
 export class AdminModule { }

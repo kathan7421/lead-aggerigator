@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { FrontLayoutComponent } from '../shared/front-layout/front-layout.component';
+import { CmspagesComponent } from './cmspages/cmspages.component';
 
 
 const routes: Routes = [
@@ -11,6 +12,7 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent },
+      { path: ':slug', component: CmspagesComponent  },
       // other frontend routes...
     ]
   }

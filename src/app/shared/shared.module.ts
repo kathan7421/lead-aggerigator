@@ -10,6 +10,12 @@ import { AdminlayoutComponent } from '../admin/adminlayout/adminlayout.component
 import { SidebarComponent } from './admin-layout/sidebar/sidebar.component';
 import { LayoutComponent } from './admin-layout/layout/layout.component';
 import { AdminFooterComponent } from './admin-layout/admin-footer/admin-footer.component';
+import {ChartModule} from 'primeng/chart';
+import { EditorModule } from 'primeng/editor';
+import { DialogModule } from 'primeng/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AppModule } from '../app.module';
+
 
 @NgModule({
   declarations: [
@@ -24,7 +30,13 @@ import { AdminFooterComponent } from './admin-layout/admin-footer/admin-footer.c
   ],
   imports: [
     CommonModule,
-    RouterModule // Import RouterModule if needed
+    RouterModule ,// Import RouterModule if needed
+    ChartModule,
+    EditorModule,
+    ReactiveFormsModule,
+    FormsModule,
+    
+    
     // Other modules as needed (FormsModule, ReactiveFormsModule, etc.)
   ],
   exports: [
@@ -32,9 +44,16 @@ import { AdminFooterComponent } from './admin-layout/admin-footer/admin-footer.c
     FooterComponent,
     AdminFooterComponent,
     AdminlayoutComponent,
-
+    DialogModule,
     CommonModule,
-    RouterModule // Export RouterModule if needed
+    RouterModule ,
+    ReactiveFormsModule,
+    FormsModule,
+    EditorModule,
+
+   
+    
+    // Export RouterModule if needed
     // Other exports as needed
   ]
 })

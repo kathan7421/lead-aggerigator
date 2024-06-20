@@ -5,7 +5,6 @@
   "projects": {
     "pro": {
       "projectType": "application",
-      "schematics": {},
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -28,13 +27,18 @@
               "node_modules/admin-lte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css",
               "node_modules/admin-lte/dist/css/adminlte.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              "node_modules/primeng/resources/themes/saga-blue/theme.css",  
+              "node_modules/primeng/resources/themes/saga-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
-              "node_modules/primeicons/primeicons.css"
+              "node_modules/primeicons/primeicons.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+               "node_modules/summernote/dist/summernote-bs4.css"
             ],
             "scripts": [
               "node_modules/admin-lte/plugins/jquery/jquery.min.js",
               "node_modules/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
               "node_modules/admin-lte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js",
               "node_modules/admin-lte/dist/js/adminlte.js",
               "node_modules/admin-lte/plugins/jquery-mousewheel/jquery.mousewheel.js",
@@ -44,8 +48,8 @@
               "node_modules/admin-lte/plugins/chart.js/Chart.min.js",
               "node_modules/admin-lte/dist/js/demo.js",
               "node_modules/admin-lte/dist/js/pages/dashboard2.js",
-              "node_modules/chart.js/dist/chart.js",
-              "node_modules/admin-lte/dist/js/adminlte.min.js"
+              "node_modules/quill/dist/quill.js",
+              "node_modules/summernote/dist/summernote-bs4.min.js"
             ]
           },
           "configurations": {

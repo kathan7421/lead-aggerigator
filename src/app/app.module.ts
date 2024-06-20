@@ -8,7 +8,6 @@ import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidebarComponent } from './shared/admin-layout/sidebar/sidebar.component';
 import { ToastrModule } from 'ngx-toastr';
-import {  CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CategoryComponent } from './admin/category/category.component';
@@ -45,6 +44,7 @@ import { HomeComponent } from './frontend/home/home.component';
 // import { AdminLayoutComponent } from './admin/admin-layout/admin-layout.component';
 import { AdminModule } from './admin/admin.module';
 import { SharedModule } from './shared/shared.module';
+import { CmsComponent } from './admin/cms/cms.component';
 // import { SharedModule } from 'primeng/api';
 
 @NgModule({
@@ -59,6 +59,7 @@ import { SharedModule } from './shared/shared.module';
     OrdersComponent,
     UsersComponent,
     BannersComponent,
+    CmsComponent,
     OrderStatusChartComponent,
     NotFoundComponent,
     CountryComponent,
@@ -91,7 +92,9 @@ import { SharedModule } from './shared/shared.module';
     FileUploadModule,
     ChartModule,
     AdminModule,
-    SharedModule
+    SharedModule,
+   
+    
   ],
 
   providers: [

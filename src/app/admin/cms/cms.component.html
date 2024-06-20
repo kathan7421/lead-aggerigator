@@ -1,0 +1,65 @@
+<button (click)="showDialog()" class="btn btn-primary">Add Cms +</button>
+
+<p-dialog header="{{ isEditMode ? 'Edit Cms' : 'Add New Cms' }}" [(visible)]="displayDialog" [modal]="true" [style]="{ 'width': '50em' }" (onHide)="closeDialog()">
+  <form [formGroup]="cmsForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="title">Title</label>
+      <input type="text" class="form-control" id="title" formControlName="title"
+             [ngClass]="{
+               'is-invalid': cmsForm.get('title')?.invalid && cmsForm.get('title')?.touched,
+               'is-valid': cmsForm.get('title')?.valid && cmsForm.get('title')?.touched
+             }">
+      <div *ngIf="cmsForm.get('title')?.invalid && cmsForm.get('title')?.touched" class="invalid-feedback">Title is required</div>
+    </div>
+    <div class="form-group">
+        <label for="title">Slug</label>
+        <input type="text" class="form-control" id="slug" formControlName="slug"
+               [ngClass]="{
+                 'is-invalid': cmsForm.get('slug')?.invalid && cmsForm.get('slug')?.touched,
+                 'is-valid': cmsForm.get('slug')?.valid && cmsForm.get('slug')?.touched
+               }">
+        <!-- <div *ngIf="cmsForm.get('title')?.invalid && cmsForm.get('title')?.touched" class="invalid-feedback">Title is required</div> -->
+      </div>
+    <div class="form-group">
+        <label for="content">Content</label>
+        <p-editor formControlName="content" [style]="{ 'height.px': 320 }"
+                 [ngClass]="{
+                   'is-invalid': cmsForm.get('content')?.invalid && cmsForm.get('content')?.touched,
+                   'is-valid': cmsForm.get('content')?.valid && cmsForm.get('content')?.touched
+                 }"></p-editor>
+        <div *ngIf="cmsForm.get('content')?.invalid && cmsForm.get('content')?.touched" class="invalid-feedback">
+          Content is required
+        </div>
+      </div>
+    <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Add' }}</button>
+  </form>
+</p-dialog>
+
+<p-table [value]="cms" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
+    <ng-template pTemplate="header">
+        <tr>
+            <th>Index</th>
+            <th pSortableColumn="id">Page ID <p-sortIcon field="id"></p-sortIcon></th>
+            <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
+            <th pSortableColumn="slug">Slug <p-sortIcon field="content"></p-sortIcon></th>
+            <th>Status</th>
+            <th>Action</th> 
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cms let-i="rowIndex">
+        <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ cms.id }}</td>
+            <td>{{ cms.title }}</td>
+            <td>{{ cms.slug }}</td>
+           
+            <td>
+                <p-inputSwitch class="switch" [ngModel]="cms.status === '1'" (onChange)="changeCmsStatus(cms.id, $event.checked)"></p-inputSwitch>
+            </td>
+            <td>
+                <button class="btn btn-primary" (click)="openEditDialog(cms.id)"><i class="fas fa-edit"></i></button>
+                <button class="btn btn-danger" (click)="deleteCms(cms.id)"><i class="fas fa-trash"></i></button>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

@@ -53,7 +53,18 @@ currentUserValue: any;
     this.currentUserSubject.next(null);
     this.router.navigate(['admin/login']);
   }
-
+  getCurrentUserEmail(): string | null {
+    const currentUser = this.currentUserValue;
+    return currentUser ? currentUser.email : null;
+  }
+  sendPasswordResetEmail(email: string): Observable<any> {
+    const formData = { email }; // Assuming your Laravel endpoint expects an object with 'email' field
+    return this.http.post<any>(`${this.apiUrl}/forget-password`, formData);
+  }
+  resetPassword(token: string, email: string, password: string, password_confirmation: string): Observable<any> {
+    const formData = { token, email, password, password_confirmation };
+    return this.http.post<any>(`${this.apiUrl}/password/reset`, formData);
+  }
   isLoggedIn(): boolean {
     return !!localStorage.getItem('currentUser');
   }

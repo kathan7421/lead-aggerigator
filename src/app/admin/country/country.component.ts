@@ -181,16 +181,16 @@ deleteCountry(countryId:number) : void {
         response => {
           console.log('Product deleted successfully:', response);
           this.loadCountries();
-          Swal.fire('Deleted!', 'The Product has been deleted.', 'success');
+          Swal.fire('Deleted!', 'The Country has been deleted.', 'success');
         },
         error => {
-          console.error('Error deleting Product:', error);
+          console.error('Error deleting Country:', error);
           // Handle error, such as displaying an error message
           Swal.fire('Error!', 'Failed to delete the Product.', 'error');
         }
       );
     } else if (result.dismiss === Swal.DismissReason.cancel) {
-      Swal.fire('Cancelled', 'The Product is safe :)', 'info');
+      Swal.fire('Cancelled', 'The Country is safe :)', 'info');
     }
   });
 }
