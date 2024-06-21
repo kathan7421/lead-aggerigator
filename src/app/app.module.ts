@@ -96,7 +96,9 @@ import { CmsComponent } from './admin/cms/cms.component';
    
     
   ],
-
+  exports:[
+    TableModule
+  ],
   providers: [
     MessageService,
     DialogService,

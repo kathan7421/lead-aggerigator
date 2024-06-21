@@ -14,6 +14,10 @@ import { AdminlayoutComponent } from './adminlayout/adminlayout.component';
 import { ForgotPasswordComponent } from './forget-password/forget-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { CmsComponent } from './cms/cms.component';
+import { CompanyComponent } from './company/company.component';
+import { CompanyaddComponent } from './company/companyadd/companyadd.component';
+import { CompanyeditComponent } from './company/companyedit/companyedit.component';
+import { CompanyviewComponent } from './company/companyview/companyview.component';
 
 const adminRoutes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -32,6 +36,14 @@ const adminRoutes: Routes = [
       { path: 'banners', component: BannersComponent, data: { title: 'Banner Management' } },
       { path: 'country', component: CountryComponent, data: { title: 'Country Management' } },
       { path: 'cms',component:CmsComponent, data: {title:'Cms Management'} },
+      {path: 'company', 
+    component: CompanyComponent, 
+    data: { title: 'Company Management' },
+    children: [
+      { path: 'add', component: CompanyaddComponent,data:{title:'Company Add'} },
+      { path: 'edit/:id', component: CompanyeditComponent },
+      { path: 'view/:id', component: CompanyviewComponent },
+    ] },
       { path: '**', component: NotFoundComponent, data: { title: '404 Not Found' } },
     ]
   },

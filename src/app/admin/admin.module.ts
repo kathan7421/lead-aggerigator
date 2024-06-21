@@ -10,11 +10,18 @@ import {FormsModule, ReactiveFormsModule , } from '@angular/forms';
 // import { CmsComponent } from './cms/cms.component';
 import { EditorModule } from 'primeng/editor';
 import { CompanyComponent } from './company/company.component';
+import { CompanyaddComponent } from './company/companyadd/companyadd.component';
+import { CompanyeditComponent } from './company/companyedit/companyedit.component';
+import { CompanyviewComponent } from './company/companyview/companyview.component';
+import { TableModule } from 'primeng/table';
 @NgModule({
   declarations: [
    ForgotPasswordComponent,
    ResetPasswordComponent,
    CompanyComponent,
+   CompanyaddComponent,
+   CompanyeditComponent,
+   CompanyviewComponent,
   //  CmsComponent,
   ],
   imports: [
@@ -23,7 +30,8 @@ import { CompanyComponent } from './company/company.component';
     SharedModule,
     ReactiveFormsModule,
     FormsModule,
-    EditorModule
+    EditorModule,
+    TableModule
   ]
 })
 export class AdminModule { }
