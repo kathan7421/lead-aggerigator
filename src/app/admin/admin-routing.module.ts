@@ -18,6 +18,7 @@ import { CompanyComponent } from './company/company.component';
 import { CompanyaddComponent } from './company/companyadd/companyadd.component';
 import { CompanyeditComponent } from './company/companyedit/companyedit.component';
 import { CompanyviewComponent } from './company/companyview/companyview.component';
+import { CountryResolver } from './country/country.resolver';
 
 const adminRoutes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -34,7 +35,7 @@ const adminRoutes: Routes = [
       { path: 'product', component: ProductsComponent, data: { title: 'Product Management' } },
       { path: 'orders', component: OrdersComponent, data: { title: 'Order Management' } },
       { path: 'banners', component: BannersComponent, data: { title: 'Banner Management' } },
-      { path: 'country', component: CountryComponent, data: { title: 'Country Management' } },
+      { path: 'country', component: CountryComponent, data: { title: 'Country Management' }, resolve: { countries: CountryResolver } },
       { path: 'cms',component:CmsComponent, data: {title:'Cms Management'} },
       {path: 'company', 
     component: CompanyComponent, 

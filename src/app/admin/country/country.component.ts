@@ -6,7 +6,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/auth-service.service';
 import Swal from 'sweetalert2';
-
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-country',
   templateUrl: './country.component.html',
@@ -27,7 +27,8 @@ export class CountryComponent implements OnInit {
     private countryService: CountryService,
     public dialogService: DialogService,
     public toastr: ToastrService,
-    public authService: AuthService
+    public authService: AuthService,
+    public route:ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -140,21 +141,30 @@ closeDialog() {
     this.selectedFile = null; // Reset selected file to null
     // this.uploadedImageUrl = null;
   }
+// loadCountries(): void {
+//     if (this.authService.isLoggedIn()) {
+//       this.countryService.getCountries().subscribe(
+//         (response: { data: Country[] }) => {
+//           this.countries = response.data;
+//           console.log('Countries fetched successfully:', this.countries);
+//         },
+//         (error) => {
+//           console.error('Error fetching Countries', error);
+//         }
+//       );
+//     } else {
+//       console.error('User Not Logged In');
+//     }
+//   }
 loadCountries(): void {
-    if (this.authService.isLoggedIn()) {
-      this.countryService.getCountries().subscribe(
-        (response: { data: Country[] }) => {
-          this.countries = response.data;
-          console.log('Countries fetched successfully:', this.countries);
-        },
-        (error) => {
-          console.error('Error fetching Countries', error);
-        }
-      );
-    } else {
-      console.error('User Not Logged In');
-    }
-  }
+  if (this.authService.isLoggedIn()) {
+  this.route.data.subscribe((data: any) => {
+    this.countries = data.countries.data;
+    console.log('Countries fetched successfully:', this.countries);
+  });
+}
+}
+
 changeCountryStatus(countryId:number,checked:boolean) : void {
   const newStatus = checked ? 1 : 0;
   this.countryService.updateCountryStatus(countryId,newStatus).subscribe(
