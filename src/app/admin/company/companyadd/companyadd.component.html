@@ -1,63 +1,157 @@
-<form>
-    <div class="container-fluid">
+<form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+  <div class="container-fluid">
     <div class="row">
-    <div class="col">
-      <label for="exampleInputEmail1" class="form-label">Name</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" >
-    </div>
-    <div class="col">
+      <div class="col">
+        <label for="exampleInputEmail1" class="form-label">Name</label>
+        <input type="text" class="form-control" formControlName="name" id="exampleInputEmail1"
+          [ngClass]="{'is-invalid': companyForm.get('name')?.invalid && companyForm.get('name')?.touched,
+                      'is-valid': companyForm.get('name')?.valid && companyForm.get('name')?.touched}">
+        <div *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched" class="invalid-feedback">
+          Name is required
+        </div>
+      </div>
+      <div class="col">
         <label for="exampleInputEmail1" class="form-label">Email address</label>
-        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    </div>
-    <div class="col">
-        <label for="companyname" class="form-label">Company Name</label>
-        <input type="text" class="form-control" id="companyname">
+        <input type="email" class="form-control" formControlName="email" id="exampleInputEmail1"
+          aria-describedby="emailHelp"
+          [ngClass]="{
+            'is-invalid': (companyForm.get('email')?.invalid && companyForm.get('email')?.touched) || companyForm.get('email')?.hasError('emailExists'),
+            'is-valid': companyForm.get('email')?.valid && companyForm.get('email')?.touched
+          }">
+        <div *ngIf="companyForm.get('email')?.invalid && companyForm.get('email')?.touched" class="invalid-feedback">
+          <div *ngIf="companyForm.get('email')?.hasError('required')">Email is required.</div>
+          <div *ngIf="companyForm.get('email')?.hasError('email')">Invalid email format.</div>
+          <div *ngIf="companyForm.get('email')?.hasError('emailExists')">Email already exists in the database.</div>
+        </div>
       </div>
-   </div>
-   <div class="row mt-4">
-    <div class="col">
+      <div class="col">
+        <label for="exampleInputEmail1" class="form-label">Tag Line</label>
+        <input type="text" class="form-control" formControlName="tag_line" id="exampleInputEmail1"
+          [ngClass]="{'is-invalid': companyForm.get('tag_line')?.invalid && companyForm.get('tag_line')?.touched,
+                      'is-valid': companyForm.get('tag_line')?.valid && companyForm.get('tag_line')?.touched}">
+                      <div *ngIf="companyForm.get('tag_line')?.invalid && companyForm.get('tag_line')?.touched" class="invalid-feedback">Tag Line Required</div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col">
         <label for="fax" class="form-label">Fax</label>
-        <input type="text" class="form-control" id="fax">
-    </div>
-    <div class="col">
-      <label for="websiteurl" class="form-label">Website Url</label>
-      <input type="url" class="form-control" id="websiteurl">
-    </div>
-    <div class="col">
+        <input type="text" class="form-control" formControlName="fax" id="fax"
+          [ngClass]="{'is-invalid': companyForm.get('fax')?.invalid && companyForm.get('fax')?.touched,
+                      'is-valid': companyForm.get('fax')?.valid && companyForm.get('fax')?.touched}">
+        <div *ngIf="companyForm.get('fax')?.invalid && companyForm.get('fax')?.touched" class="invalid-feedback">
+          Fax is required
+        </div>
+      </div>
+      <div class="col">
+        <label for="websiteurl" class="form-label">Website Url</label>
+        <input type="url" class="form-control" formControlName="website"
+          [ngClass]="{'is-invalid': companyForm.get('website')?.invalid && companyForm.get('website')?.touched,
+                      'is-valid': companyForm.get('website')?.valid && companyForm.get('website')?.touched}">
+        <div *ngIf="companyForm.get('website')?.invalid && companyForm.get('website')?.touched" class="invalid-feedback">
+          Website is required or Not Invalid URL format
+        </div>
+        
+      </div>
+      <div class="col">
         <label for="phonenumber" class="form-label">Phone Number</label>
-        <input type="tel" class="form-control" id="phonenumber">
+        <input type="tel" class="form-control" formControlName="phone" id="phonenumber"
+          [ngClass]="{'is-invalid': companyForm.get('phone')?.invalid && companyForm.get('phone')?.touched,
+                      'is-valid': companyForm.get('phone')?.valid && companyForm.get('phone')?.touched}">
+        <div *ngIf="companyForm.get('phone')?.invalid && companyForm.get('phone')?.touched" class="invalid-feedback">
+          Phone Number is required
+        </div>
       </div>
-   </div>
-   <div class="row mt-4">
-    <div class="col">
-      <label for="gstnumber" class="form-label">Gst Number</label>
-      <input type="text" class="form-control" id="gstnumber" >
     </div>
-    <div class="col">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="col">
-        <label for="formFile" class="form-label">Logo</label>
-        <input class="form-control" type="file" id="formFile">
+    <div class="row mt-4">
+      <div class="col">
+        <label for="gstnumber" class="form-label">Gst Number</label>
+        <input type="text" class="form-control" formControlName="gst_number" id="gstnumber">
       </div>
-   </div>
-   <div class="row mt-4">
-    <div class="col">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    </div>
-    <div class="col">
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="col">
-        <label for="formFile" class="form-label">Logo</label>
-        <input class="form-control" type="file" id="formFile">
+      <div class="col">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" class="form-control" formControlName="password" id="password"
+          [ngClass]="{'is-invalid': companyForm.get('password')?.invalid && companyForm.get('password')?.touched,
+                      'is-valid': companyForm.get('password')?.valid && companyForm.get('password')?.touched}">
+        <div *ngIf="companyForm.get('password')?.invalid && companyForm.get('password')?.touched" class="invalid-feedback">
+          <div *ngIf="companyForm.get('password')?.errors?.['required']">Password is required.</div>
+          <div *ngIf="companyForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters long.</div>
+          <div *ngIf="companyForm.get('password')?.errors?.['maxlength']">Password cannot be more than 10 characters long.</div>
+        </div>
+       </div>
+      <div class="col">
+        <label for="gstnumber" class="form-label">Register Number</label>
+        <input type="text" class="form-control" formControlName="register_number" id="register_number">
       </div>
-   </div>
-   <div class="mt-4">
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </div>
-</div>
-  </form>
+    </div>
+    <div class="row mt-4">
+      <div class="col">
+        <label for="logo" class="form-label">Logo</label>
+        <input type="file" id="logo" #logoPicker formControlName="logo" (change)="onFileChange($event, 'logo')"
+          class="form-control">
+        <img *ngIf="logoPreview" [src]="logoPreview" class="img-fluid mt-2" alt="Logo Preview">
+      </div>
+      <div class="col">
+        <label for="cover_photo" class="form-label">Cover Photo</label>
+        <input type="file" id="cover_photo" #coverPhotoPicker formControlName="cover_photo"
+          (change)="onFileChange($event, 'cover_photo')" class="form-control">
+        <!-- Optional: Display cover photo preview -->
+        <img *ngIf="coverPhotoPreview" [src]="coverPhotoPreview" class="img-fluid mt-2" alt="Cover Photo Preview">
+      </div>
+      <div class="col">
+        <label for="document" class="form-label">Document</label>
+        <input type="file" id="document" #documentPicker formControlName="document"
+          (change)="onFileChange($event, 'document')" class="form-control">
+        <!-- Optional: Display document preview -->
+        <div *ngIf="documentPreview">{{ documentPreview.name }}</div>
+      </div>
+    </div>
+    <!-- <div class="row mt-4">
+      <div class="col">
+        <label for="location" class="form-label">Location</label>
+        <app-location-selector formControlName="location"
+          (countryChange)="onCountryChanged($event)"
+          (stateChange)="onStateChanged($event)"
+          (cityChange)="onCityChanged($event)"
+          [ngClass]="{
+            'is-invalid': companyForm.get('location')?.invalid && companyForm.get('location')?.touched,
+            'is-valid': companyForm.get('location')?.valid && companyForm.get('location')?.touched
+          }">
+        </app-location-selector>
+        <div *ngIf="companyForm.get('location')?.invalid && companyForm.get('location')?.touched" class="invalid-feedback">
+          Location is required
+        </div>
+      </div>
+    </div> -->
+    <div class="row mt-4">
+      <div class="col">
+        <label for="location" class="form-label">Location</label>
+        <app-location-selector
+          (countryChange)="onCountryChanged($event)"
+          (stateChange)="onStateChanged($event)"
+          (cityChange)="onCityChanged($event)">
+        </app-location-selector>
+        <div *ngIf="companyForm.get('country')?.invalid && companyForm.get('country')?.touched" class="invalid-feedback">
+          Country is required
+        </div>
+        <div *ngIf="companyForm.get('state')?.invalid && companyForm.get('state')?.touched" class="invalid-feedback">
+          State is required
+        </div>
+        <div *ngIf="companyForm.get('city')?.invalid && companyForm.get('city')?.touched" class="invalid-feedback">
+          City is required
+        </div>
+      </div>
+    </div>  
+    <div class="row mt-4">
+      <div class="col">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" formControlName="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+      </div>
+      <div class="col">
+        <label for="address" class="form-label">Address</label>
+        <textarea class="form-control" formControlName="address" id="address" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary"  [disabled]="disablebtn">Submit</button>
+    </div>
+ 

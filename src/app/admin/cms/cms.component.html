@@ -1,10 +1,15 @@
-<button (click)="showDialog()" class="btn btn-primary">Add Cms +</button>
+<button class="btn btn-primary" (click)="showDialog()" >
+  <i class="fas fa-plus"></i>
+ </button>
+<button class="btn btn-danger" (click)="deleteSelectedCms()" [disabled]="selectedCmspage.length === 0">
+  <i class="fas fa-trash"></i>
+ </button>
 
 <p-dialog header="{{ isEditMode ? 'Edit Cms' : 'Add New Cms' }}" [(visible)]="displayDialog" [modal]="true" [style]="{ 'width': '50em' }" (onHide)="closeDialog()">
   <form [formGroup]="cmsForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
-      <label for="title">Title</label>
-      <input type="text" class="form-control" id="title" formControlName="title"
+      <label for="title">Title<span class="required">*</span></label>
+      <input type="text" class="form-control" id="title" formControlName="title"  placeholder="Enter Page Name"
              [ngClass]="{
                'is-invalid': cmsForm.get('title')?.invalid && cmsForm.get('title')?.touched,
                'is-valid': cmsForm.get('title')?.valid && cmsForm.get('title')?.touched
@@ -12,8 +17,8 @@
       <div *ngIf="cmsForm.get('title')?.invalid && cmsForm.get('title')?.touched" class="invalid-feedback">Title is required</div>
     </div>
     <div class="form-group">
-        <label for="title">Slug</label>
-        <input type="text" class="form-control" id="slug" formControlName="slug"
+        <label for="title">Slug (optional)</label>
+        <input type="text" class="form-control" id="slug" formControlName="slug"   placeholder="Enter Page Slug"
                [ngClass]="{
                  'is-invalid': cmsForm.get('slug')?.invalid && cmsForm.get('slug')?.touched,
                  'is-valid': cmsForm.get('slug')?.valid && cmsForm.get('slug')?.touched
@@ -21,7 +26,7 @@
         <!-- <div *ngIf="cmsForm.get('title')?.invalid && cmsForm.get('title')?.touched" class="invalid-feedback">Title is required</div> -->
       </div>
     <div class="form-group">
-        <label for="content">Content</label>
+        <label for="content">Content <span class="required">*</span></label>
         <p-editor formControlName="content" [style]="{ 'height.px': 320 }"
                  [ngClass]="{
                    'is-invalid': cmsForm.get('content')?.invalid && cmsForm.get('content')?.touched,
@@ -35,9 +40,12 @@
   </form>
 </p-dialog>
 
-<p-table [value]="cms" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
+<p-table [value]="cms" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']"  [(selection)]="selectedCmspage" selectionMode="checkbox">
     <ng-template pTemplate="header">
         <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
             <th>Index</th>
             <th pSortableColumn="id">Page ID <p-sortIcon field="id"></p-sortIcon></th>
             <th pSortableColumn="title">Title <p-sortIcon field="title"></p-sortIcon></th>
@@ -48,6 +56,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-cms let-i="rowIndex">
         <tr>
+          <td>
+            <p-tableCheckbox [value]="cms"></p-tableCheckbox>
+          </td>
             <td>{{ i + 1 }}</td>
             <td>{{ cms.id }}</td>
             <td>{{ cms.title }}</td>

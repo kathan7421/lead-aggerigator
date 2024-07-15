@@ -1,5 +1,8 @@
-<!-- <button (click)="showDialog()" class="btn btn-primary">Add Country +</button> -->
-<button (click)="showDialog()" class="btn btn-primary">Add Country +</button>
+<button class="btn btn-primary" (click)="showDialog()" >
+  <i class="fas fa-plus"></i>
+ </button>
+<button class="btn btn-danger" (click)="deleteSelectedCountry()" [disabled]="selectCountry.length === 0">
+  <i class="fas fa-trash"></i></button>
 <p-dialog header="{{ isEditMode ? 'Edit Country' : 'Add New Country' }}" [(visible)]="displayDialog" [modal]="true" [style]="{ width: '50em' }" (onHide)="closeDialog()">
   <form [formGroup]="countryForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
@@ -13,7 +16,7 @@
     </div>
     <div class="form-group">
       <label for="image">Image</label>
-      <input type="file" class="form-control-file" formControlName="image" id="image" (change)="onFileChange($event)" accept="image/*">
+      <input type="file" class="form-control" formControlName="image" id="image" (change)="onFileChange($event)" accept="image/*">
       <img *ngIf="imagePreviewUrl" [src]="imagePreviewUrl" alt="Image Preview" class="img-fluid mt-3">
     </div>
     <button type="submit" class="btn btn-primary">{{ isEditMode ? 'Update' : 'Add' }}</button>
@@ -22,9 +25,12 @@
 
 
 
-  <p-table [value]="countries" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
+  <p-table [value]="countries" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']"  [(selection)]="selectCountry" selectionMode="checkbox">
     <ng-template pTemplate="header">
         <tr>
+          <th style="width: 3rem">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
             <th>Index</th>
             <th pSortableColumn="id">Country ID <p-sortIcon field="id"></p-sortIcon></th>
             <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
@@ -37,6 +43,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-country let-i="rowIndex">
         <tr>
+          <td>
+            <p-tableCheckbox [value]="country"></p-tableCheckbox>
+          </td>
             <td>{{ i + 1 }}</td>
             <td>{{ country.id }}</td>
             <td>{{ country.name }}</td>

@@ -8,6 +8,8 @@ export class Country{
     meta_title!: string | null;
     meta_description!: string | null;
     meta_keywords!: string | null;
+    label!: string;
+  value!: number;
 }
 export interface ChangeStatusResponse {
     message: string;

@@ -15,6 +15,7 @@ import { EditorModule } from 'primeng/editor';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppModule } from '../app.module';
+import { LocationSelectorComponent } from './location/location.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { AppModule } from '../app.module';
     SidebarComponent,
     LayoutComponent,
     AdminFooterComponent,
+    LocationSelectorComponent,
     // Other shared components if any
   ],
   imports: [
@@ -50,6 +52,7 @@ import { AppModule } from '../app.module';
     ReactiveFormsModule,
     FormsModule,
     EditorModule,
+    LocationSelectorComponent,
 
    
     

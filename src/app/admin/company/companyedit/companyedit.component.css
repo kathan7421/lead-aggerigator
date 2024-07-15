@@ -1,0 +1,8 @@
+.fa-folder:before {
+    content: "\f07b";
+    color: #b97317;
+}
+img{
+    width: 80px;
+    height: 80px;
+}

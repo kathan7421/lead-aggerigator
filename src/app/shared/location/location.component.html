@@ -1,0 +1,24 @@
+<div class="row mt-4">
+    <div class="col">
+      <label for="country" class="form-label">Country</label>
+      <select class="form-select" id="country" aria-label="Select Country" (change)="onCountryChange($event)">
+        <option selected>Select Country</option>
+        <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="state" class="form-label">State</label>
+      <select class="form-select" id="state" aria-label="Select State" (change)="onStateChange($event)" [disabled]="!states.length">
+        <option selected>Select State</option>
+        <option *ngFor="let state of states" [value]="state.id">{{ state.statename }}</option>
+      </select>
+    </div>
+    <div class="col">
+      <label for="city" class="form-label">City</label>
+      <select class="form-select" id="city" aria-label="Select City" (change)="onCityChange($event)" [disabled]="!cities.length">
+        <option selected>Select City</option>
+        <option *ngFor="let city of cities" [value]="city.id">{{ city.cityName }}</option>
+      </select>
+    </div>
+  </div>
+  

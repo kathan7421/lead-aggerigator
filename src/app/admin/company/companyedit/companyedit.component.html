@@ -1,1 +1,187 @@
-<p>companyedit works!</p>
+
+ 
+    <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+        <div class="container-fluid">
+            <div class="row">
+        <div class="col">
+      <div class="form-group" formGroupName="user">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" id="name" formControlName="name" >
+        <!-- <div *ngIf="hasError('name', 'required')" class="invalid-feedback">
+          Name is required
+        </div> -->
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group" formGroupName="user">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" id="email" formControlName="email" >
+        <!-- <div *ngIf="hasError('email', 'required')" class="invalid-feedback">
+          Email is required
+        </div> -->
+        <!-- <div *ngIf="hasError('email', 'email')" class="invalid-feedback">
+          Please enter a valid email address
+        </div> -->
+      </div>
+  </div>
+  <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="phone">Phone</label>
+        <input type="tel" class="form-control" id="phone" formControlName="phone" >
+        <!-- <div *ngIf="hasError('phone', 'required')" class="invalid-feedback">
+          Phone number is required
+        </div> -->
+      </div>
+  </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="gstNumber">GST Number</label>
+        <input type="text" class="form-control" id="gstNumber" formControlName="gst_number">
+      </div>
+  </div>
+  <div class="col">
+          
+    <div class="form-group" formGroupName="company">
+      <label for="website">Website</label>
+      <input type="text" class="form-control" id="website" formControlName="website" required pattern="https?://.+">
+
+</div>
+    </div>
+    <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="fax">Fax</label>
+        <input type="text" class="form-control" id="fax" formControlName="fax">
+      </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="logo">Document</label>
+        <input type="file" class="form-control"   id="logo" (change)="onFileChange($event, 'document')" accept="image/*">
+        <div *ngIf="documentPreview" class="document-preview-container mt-2">
+          <div> <i class="fas fa-folder fa-4x"></i></div>
+          <!-- Replace this with your folder icon -->
+         
+          <!-- Optionally, you can display the document name or other information -->
+         <div> <span>{{ documentPreview }}</span></div>
+        </div>
+      </div>
+      </div>
+        <!-- <div *ngIf="hasError('password', 'required')" class="invalid-feedback">
+          Password is required
+        </div>
+        <div *ngIf="hasError('password', 'minlength')" class="invalid-feedback">
+          Password must be at least 6 characters long
+        </div>
+        <div *ngIf="hasError('password', 'maxlength')" class="invalid-feedback">
+          Password cannot exceed 10 characters
+        </div> -->
+  <div class="col">
+    <div class="form-group" formGroupName="company">
+      <label for="logo">Logo</label>
+      <input type="file" class="form-control"   id="logo" (change)="onFileChange($event, 'logo')" accept="image/*">
+      <img *ngIf="logoPreview" [src]="logoPreview" alt="Logo Preview" class="img-thumbnail mt-2" style="max-width: 200px;">
+    </div>
+     
+        <!-- <div *ngIf="hasError('website', 'required')" class="invalid-feedback">
+          Website URL is required
+        </div>
+        <div *ngIf="hasError('website', 'pattern')" class="invalid-feedback">
+          Please enter a valid URL starting with http:// or https://
+        </div> -->
+      
+  </div>
+  <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="coverPhoto">Cover Photo</label>
+        <input type="file" class="form-control" id="coverPhoto" (change)="onFileChange($event, 'cover_photo')">
+        <img *ngIf="coverPhotoPreview" [src]="coverPhotoPreview" alt="Cover Photo Preview" class="img-thumbnail mt-2" style="max-width: 200px;">
+      </div>
+  </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="description">Description</label>
+        <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="address">Address</label>
+        <textarea class="form-control" id="address" formControlName="address" rows="3" ></textarea>
+        <!-- <div *ngIf="hasError('address', 'required')" class="invalid-feedback">
+          Address is required
+        </div> -->
+      </div>
+     
+  </div>
+  <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="country">Country</label>
+        <select class="form-control" id="country" formControlName="country" (change)="onCountryChanged($event)">
+          <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id === companyForm.get('company.country')?.value">{{ country.name }}</option>
+        </select>
+      </div>
+      </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+            <div class="form-group" formGroupName="company">
+                <label for="state">State</label>
+                <select class="form-control" id="state" formControlName="state" (change)="onStateChanged($event)">
+                  <option *ngFor="let state of states" [value]="state.id" [selected]="state.id === companyForm.get('company.state')?.value">{{ state.statename }}</option>
+                </select>
+              </div>
+        </div>
+     
+      
+      
+        <div class="col">
+  
+      <div class="form-group" formGroupName="company">
+        <label for="city">City</label>
+        <select class="form-control" id="city" formControlName="city">
+          <option *ngFor="let city of cities" [value]="city.id">{{ city.cityName }}</option>
+        </select>
+        <!-- <div *ngIf="hasError('city', 'required')" class="invalid-feedback">
+          City is required
+        </div> -->
+      </div>
+  </div>
+  <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="registerNumber">Register Number</label>
+        <input type="text" class="form-control" id="registerNumber" formControlName="register_number">
+      </div>
+  </div>
+  </div>
+  <div class="row mt-4">
+    <div class="col">
+      <div class="form-group" formGroupName="company">
+        <label for="tagLine">Tag Line</label>
+        <input type="text" class="form-control" id="tagLine" formControlName="tag_line" required>
+        <!-- <div *ngIf="hasError('tag_line', 'required')" class="invalid-feedback">
+          Tag Line is required
+        </div> -->
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group" formGroupName="user">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" formControlName="password" >
+    </div>
+</div>
+</div>
+<div class="col">
+      <button type="submit" class="btn btn-primary" >Update</button>
+      <button type="button" class="btn btn-secondary ml-2" (click)="resetForm()">Reset</button>
+      </div>
+    </div>
+      </div>
+    
+    </form>
+  
+  

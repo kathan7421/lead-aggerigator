@@ -34,4 +34,7 @@ export class BannersService {
   updateBannerStatus(bannerId:number,newStatus:number):Observable<Banners>{
     return this.http.post<Banners>(`${this.apiUrl}/changestatus/${bannerId}`,{status:newStatus});
   }
+  deleteAll(bannerIds:number[]):Observable<DeleteResponse>{
+    return this.http.delete<DeleteResponse>(`${this.apiUrl}`,{body:{bannerIds}});
+  }
 }

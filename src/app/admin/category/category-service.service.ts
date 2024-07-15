@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { DeleteResponse } from '../products/product.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,8 +12,8 @@ export class CategoryService {
 
   constructor(private http: HttpClient) { }
 
-  getCategories(): Observable<any> {
-    return this.http.get<any>(this.apiUrl);
+  getCategories(): Observable<{data :any}> {
+    return this.http.get<{data :any}>(this.apiUrl);
   }
 
   updateCategoryStatus(categoryId: number, status: number): Observable<any> {
@@ -33,5 +34,8 @@ export class CategoryService {
   }
   getCategoryById(categoryId: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${categoryId}`);
+  }
+  deleteCategoies(categoryIds:number[]):Observable<DeleteResponse>{
+    return this.http.delete<DeleteResponse>(`${this.apiUrl}`,{body:{categoryIds}});
   }
 }

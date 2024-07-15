@@ -7,6 +7,8 @@ img {
 }
 button {
     margin-right: 5px !important;
+    height: 38px;
+    margin-right: 5px;
 }
 input {
     width: 100%;
@@ -14,3 +16,4 @@ input {
 textarea{
     width: 100%;
 }
+

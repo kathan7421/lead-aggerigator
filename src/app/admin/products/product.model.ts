@@ -3,12 +3,13 @@ export interface Product {
     id:number;
     name: string;
     description: string;
-    price: string;
-    qty: string;
+    // price: string;
+    // qty: string;
     category_id: Catrgories;
     slug: string;
     status: number;
-    sku:any;
+    
+    // sku:any;
     image?: string;
     // updated_at: string;
     // created_at: string;
@@ -18,11 +19,11 @@ export interface Product {
     
     name: string;
     description: string;
-    price: string;
-    qty: string;
+    // price: string;
+    // qty: string;
     category_id: string;
     slug: string;
-    sku:string;
+    // sku:string;
     status?: number;
     image: string;
     // updated_at: string;

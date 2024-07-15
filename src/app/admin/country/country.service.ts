@@ -32,4 +32,7 @@ export class CountryService {
   deleteCountry(countryId: number) : Observable<DeleteResponse> {
     return this.http.delete<DeleteResponse>(`${this.apiUrl}/${countryId}`);
   }
+  deleteAll(countryIds:number[]):Observable<DeleteResponse>{
+    return this.http.delete<DeleteResponse>(this.apiUrl,{body:{countryIds}});
+  }
 }

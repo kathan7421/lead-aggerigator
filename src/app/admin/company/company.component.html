@@ -1,36 +1,53 @@
 <div *ngIf="!isChildRouterActive()">
-<a [routerLink]="['add']" class="btn btn-primary">Add Company +</a>
-<p-table [value]="companies" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
-    <ng-template pTemplate="header">
-        <tr>
-            <th>Index</th>
-            <th pSortableColumn="id">Country ID <p-sortIcon field="id"></p-sortIcon></th>
-            <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-            <th pSortableColumn="email">Description <p-sortIcon field="email"></p-sortIcon></th>
+  <a [routerLink]="['add']" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+  <button class="btn btn-danger" (click)="deleteSelectedCompanies()" [disabled]="selectedCompanies.length === 0">
+   <i class="fas fa-trash"></i>
+  </button>
+  <button class="btn btn-success" (click)="refresh()">
+    <i class="fa fa-refresh"  aria-hidden="true"></i>
+  </button>
+  
 
-            <th>Image</th>
-             <th>Status</th>
-            <th>Action</th> 
-        </tr>
+  <p-table [value]="companies" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name', 'status']"
+           [(selection)]="selectedCompanies" selectionMode="checkbox">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th>Index</th>
+        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="email">Description <p-sortIcon field="email"></p-sortIcon></th>
+        <th>Image</th>
+        <th>Status</th>
+        <th>Approved</th>
+        <th>Action</th>
+      </tr>
     </ng-template>
     <ng-template pTemplate="body" let-company let-i="rowIndex">
-        <tr>
-            <td>{{ i + 1 }}</td>
-            <td>{{ company.id }}</td>
-            <td>{{ company.name }}</td>
-            <td>{{ company.description }}</td>
-            <td><img [src]="company.image" alt="Country Image"></td>
-           
-            <td>
-                <!-- <p-inputSwitch class="switch" [ngModel]="country.status === '1'" (onChange)="changeCountryStatus(country.id, $event.checked)"></p-inputSwitch> -->
-            </td>
-            <td>
-                <!-- <button class="btn btn-primary" (click)="openEditDialog(country.id)"><i class="fas fa-edit"></i></button> -->
-                <!-- <button class="btn btn-danger" (click)="deleteCountry(country.id)"><i class="fas fa-trash"></i></button> -->
-            </td>
-        </tr>
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="company"></p-tableCheckbox>
+        </td>
+        <td>{{ i + 1 }}</td>
+        <td>{{ company.name }}</td>
+        <td>{{ company.description }}</td>
+        <td><img [src]="company.logo" alt="Company Image"></td>
+        <td>
+          <p-inputSwitch class="switch" [ngModel]="company.status === '1'" (onChange)="changeCountryStatus(company.user_id, $event.checked)"></p-inputSwitch>
+        </td>
+     <td>
+          <button class="btn btn-success" (click)="activeCompany(company.user_id)" [disabled]="disableStates[company.user_id]">Approved</button>
+        </td>
+        <td> 
+          <button class="btn btn-danger" (click)="deleteCompany(company.user_id)"><i class="fas fa-trash"></i></button>
+          <a class="btn btn-success" [routerLink]="['view', company.user_id]"><i class="fas fa-eye"></i></a>
+          <a class="btn btn-primary" [routerLink]="['edit', company.user_id]"><i class="fas fa-edit"></i></a>
+        </td>
+      </tr>
     </ng-template>
-</p-table>
+  </p-table>
 </div>
-<router-outlet></router-outlet>
 
+  <router-outlet></router-outlet>
+  

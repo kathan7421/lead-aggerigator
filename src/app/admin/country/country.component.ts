@@ -19,6 +19,7 @@ export class CountryComponent implements OnInit {
   countries: Country[] = [];   // Initializing a new instance of Country
   displayDialog: boolean = false;
   selectedCountry!: Country;
+  selectCountry: any[] =[];
   selectedFile: File | null = null; // Variable to hold the selected file
   // uploadedImageUrl: string | null = null;
 
@@ -104,7 +105,7 @@ submitForm(formData: any) {
         (response) => {
           this.toastr.success('Country updated successfully', 'Success');
           this.closeDialog();
-          this.loadCountries();
+          this.getAllCountry();
         },
         (error) => {
           this.toastr.error('Something went wrong', 'Error');
@@ -116,7 +117,7 @@ submitForm(formData: any) {
         (response) => {
           this.toastr.success('Country added successfully', 'Success');
           this.closeDialog();
-          this.loadCountries();
+          this.getAllCountry();
         },
         (error) => {
           this.toastr.error('Something went wrong', 'Error');
@@ -141,21 +142,11 @@ closeDialog() {
     this.selectedFile = null; // Reset selected file to null
     // this.uploadedImageUrl = null;
   }
-// loadCountries(): void {
-//     if (this.authService.isLoggedIn()) {
-//       this.countryService.getCountries().subscribe(
-//         (response: { data: Country[] }) => {
-//           this.countries = response.data;
-//           console.log('Countries fetched successfully:', this.countries);
-//         },
-//         (error) => {
-//           console.error('Error fetching Countries', error);
-//         }
-//       );
-//     } else {
-//       console.error('User Not Logged In');
-//     }
-//   }
+  getAllCountry(){
+    this.countryService.getCountries().subscribe(res => {
+      this.countries = res.data;
+    }) 
+  }
 loadCountries(): void {
   if (this.authService.isLoggedIn()) {
   this.route.data.subscribe((data: any) => {
@@ -190,7 +181,7 @@ deleteCountry(countryId:number) : void {
       this.countryService.deleteCountry(countryId).subscribe(
         response => {
           console.log('Product deleted successfully:', response);
-          this.loadCountries();
+          this.getAllCountry();
           Swal.fire('Deleted!', 'The Country has been deleted.', 'success');
         },
         error => {
@@ -201,6 +192,39 @@ deleteCountry(countryId:number) : void {
       );
     } else if (result.dismiss === Swal.DismissReason.cancel) {
       Swal.fire('Cancelled', 'The Country is safe :)', 'info');
+    }
+  });
+}
+deleteSelectedCountry(): void {
+  if (this.selectCountry.length === 0) {
+    Swal.fire('No Selection', 'Please select at least one Country to delete.', 'info');
+    return;
+  }
+
+  const countryIds = this.selectCountry.map(country => country.id);
+
+  Swal.fire({
+    title: 'Are You Sure?',
+    text: 'You will not be able to recover these Countries!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete them!',
+    cancelButtonText: 'No, keep them'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.countryService.deleteAll(countryIds).subscribe(
+        response => {
+          this.countries = this.countries.filter(country => !countryIds.includes(country.id));
+          this.selectCountry = [];
+          Swal.fire('Deleted!', 'The selected country have been deleted.', 'success');
+        },
+        error => {
+          console.error('Error deleting banners:', error);
+          Swal.fire('Error!', 'Failed to delete the selected countries.', 'error');
+        }
+      );
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire('Cancelled', 'The selected countries are safe :)', 'info');
     }
   });
 }

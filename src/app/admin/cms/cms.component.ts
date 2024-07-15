@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/auth-service.service';
 import { Cms } from './cms.model';
 import Swal from 'sweetalert2';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cms',
@@ -17,18 +18,22 @@ export class CmsComponent implements OnInit {
   cmsForm!: FormGroup;
   cms: Cms[] = [];
   selectedcms!: Cms;
+  selectedCmspage: any [] = [];
+  
 
   constructor(
     private formBuilder: FormBuilder,
     private cmsService: CmsserviceService,
     private toastr: ToastrService,
     public authService: AuthService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.initForm();
     this.loadCms();
+    this.initForm();
+    
   }
   ngAfterViewInit(): void {
     this.cdr.detectChanges();
@@ -91,7 +96,7 @@ export class CmsComponent implements OnInit {
           (response) => {
             this.toastr.success('CMS content updated successfully.');
             this.closeDialog();
-            this.loadCms();
+            this. getAllBanners();
           },
           (error) => {
             this.toastr.error('Failed to update CMS content.');
@@ -104,7 +109,7 @@ export class CmsComponent implements OnInit {
           (response) => {
             this.toastr.success('New CMS content added successfully.');
             this.closeDialog();
-               this.loadCms();
+               this.getAllBanners();
           },
           (error) => {
             this.toastr.error('Failed to add new CMS content.');
@@ -116,13 +121,17 @@ export class CmsComponent implements OnInit {
       this.cmsForm.markAllAsTouched();
     }
   }
+  getAllBanners(){
+    this.cmsService.getCms().subscribe(res => {
+      this.cms = res.data;
+    }) 
+  }
 
   loadCms() {
-    this.cmsService.getCms().subscribe(
-      (response: { data: Cms[] }) => {
-        this.cms = response.data;
-        console.log('Cms fetched Successfully', this.cms);
-      },
+    this.route.data.subscribe((data: any) => {
+      this.cms = data.cmsData.data; // Access cmsData and then its data property
+      console.log('CMS Data fetched successfully:', this.cms);
+    },
       (error) => {
         console.error('Error:', error);
       }
@@ -162,7 +171,7 @@ deleteCms(cmsId:number){
          this.cmsService.deleteCms(cmsId).subscribe(
            response => {
              console.log('Cms deleted successfully:', response);
-             this.loadCms();
+             this. getAllBanners();
              Swal.fire('Deleted!', 'The Cms has been deleted.', 'success');
            },
            error => {
@@ -176,69 +185,38 @@ deleteCms(cmsId:number){
        }
      });
    }
-  }
-//    onSubmit(): void {
-//     if (this.cmsForm.valid) {
-//       const formData: Cms = this.cmsForm.value;
-//       if (this.isEditMode) {
-//         // Update existing CMS content
-//         this.cmsService.updateCms(formData.id, formData).subscribe(
-//           (response) => {
-//             this.toastr.success('CMS content updated successfully.');
-//             this.closeDialog();
-//             this.loadCms();
-//           },
-//           (error) => {
-//             this.toastr.error('Failed to update CMS content.');
-//             console.error('Update Error:', error);
-//           }
-//         );
-//       } else {
-//         // Add new CMS content
-//         this.cmsService.addCms(formData).subscribe(
-//           (response) => {
-//             this.toastr.success('New CMS content added successfully.');
-//             this.closeDialog();
-//           },
-//           (error) => {
-//             this.toastr.error('Failed to add new CMS content.');
-//             console.error('Add Error:', error);
-//           }
-//         );
-//       }
-//     } else {
-//       this.cmsForm.markAllAsTouched();
-//     }
-//   }
-// loadCms(){
-//   // if (this.authService.isLoggedIn()) {
-//   this.cmsService.getCms().subscribe(
-//     (response: {data: Cms[]}) => {
-//     this.cms = response.data;
-//       console.log('Cms feached Successfully',this.cms);
-//     },
-//     (error) => {
-//       console.error('Error:', error);
-//     }
-//   );
-// // }
-// }
-// changeCmsStatus(cmsId:number,checked:boolean){
-//   const newStatus = checked ? 1 : 0 ;
-//   this.cmsService.updateCmsStatus(cmsId,newStatus).subscribe(
-//     (response: Cms) => {
-//       const message = newStatus === 1 ? 'You Have Made the Status Active' : 'You have Made the Status Inactive';
-//       this.toastr.success(message,'Cms Pages Status Updated Successfully');
-//     },
-//     error => {
-//       console.error('Error Changing Status',error);
-//     }
-//   );
-// }
-//   closeDialog(): void {
-//     this.displayDialog = false;
-//     this.isEditMode = false;
-//     this.cmsForm.reset();
   
-//   }
-// }
+  deleteSelectedCms(): void {
+    if (this.selectedCmspage.length === 0) {
+      Swal.fire('No Selection', 'Please select at least one cms to delete.', 'info');
+      return;
+    }
+
+    const cmsIds = this.selectedCmspage.map(cms => cms.id);
+
+    Swal.fire({
+      title: 'Are You Sure?',
+      text: 'You will not be able to recover these CmsPage!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete them!',
+      cancelButtonText: 'No, keep them'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cmsService.deleteAll(cmsIds).subscribe(
+          response => {
+            this.cms = this.cms.filter(cms => !cmsIds.includes(cms.id));
+            this.selectedCmspage = [];
+            Swal.fire('Deleted!', 'The selected cms have been deleted.', 'success');
+          },
+          error => {
+            console.error('Error deleting companies:', error);
+            Swal.fire('Error!', 'Failed to delete the selected cms.', 'error');
+          }
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire('Cancelled', 'The selected cms are safe :)', 'info');
+      }
+    });
+  }
+ }

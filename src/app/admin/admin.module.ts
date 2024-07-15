@@ -14,6 +14,8 @@ import { CompanyaddComponent } from './company/companyadd/companyadd.component';
 import { CompanyeditComponent } from './company/companyedit/companyedit.component';
 import { CompanyviewComponent } from './company/companyview/companyview.component';
 import { TableModule } from 'primeng/table';
+import { InputSwitchModule } from 'primeng/inputswitch';
+import { UserComponent } from './user/user.component';
 @NgModule({
   declarations: [
    ForgotPasswordComponent,
@@ -22,6 +24,7 @@ import { TableModule } from 'primeng/table';
    CompanyaddComponent,
    CompanyeditComponent,
    CompanyviewComponent,
+   UserComponent,
   //  CmsComponent,
   ],
   imports: [
@@ -31,7 +34,8 @@ import { TableModule } from 'primeng/table';
     ReactiveFormsModule,
     FormsModule,
     EditorModule,
-    TableModule
+    TableModule,
+    InputSwitchModule,
   ]
 })
 export class AdminModule { }

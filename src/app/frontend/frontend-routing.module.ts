@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { FrontLayoutComponent } from '../shared/front-layout/front-layout.component';
 import { CmspagesComponent } from './cmspages/cmspages.component';
+import { NotFoundComponent } from '../admin/not-found/not-found.component';
 
 
 const routes: Routes = [
@@ -13,8 +14,10 @@ const routes: Routes = [
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent },
       { path: ':slug', component: CmspagesComponent  },
+     
       // other frontend routes...
     ]
+    
   }
 ];
 

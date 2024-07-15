@@ -26,7 +26,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
 // import { InputTextModule } from 'primeng/inputtext';
 import { MessageService } from 'primeng/api';
 import { DialogService } from 'primeng/dynamicdialog';
-
+import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './admin/auth.interceptor';
@@ -97,11 +97,13 @@ import { CmsComponent } from './admin/cms/cms.component';
     
   ],
   exports:[
-    TableModule
+    TableModule,
+    InputSwitchModule
   ],
   providers: [
     MessageService,
     DialogService,
+    ConfirmationService,
     Title,
     {
       provide: HTTP_INTERCEPTORS,

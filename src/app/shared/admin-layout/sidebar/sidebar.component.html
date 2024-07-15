@@ -14,7 +14,7 @@
           <img src="/assets/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image"> 
         </div>
         <div class="info" *ngIf="currentUser">
-          <a href="#" class="d-block">{{currentUser}}</a><span><i class="fas fa-power-off" (click)="logout()"></i></span>
+          <a href="#" class="d-block">{{currentUser}}</a><span><i class="fa fa-power-off" (click)="logout()"></i></span>
          </div>
       </div>
 
@@ -93,17 +93,6 @@
               </a>
           </li>
           <li class="nav-item">
-            <a [routerLink]="['/admin/orders']" routerLinkActive="active" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Orders
-                <span class="badge badge-info right">6</span>
-                <!-- <i class="right fas fa-angle-left"></i> -->
-              </p>
-            </a>
-          
-          </li>
-          <li class="nav-item">
             <a [routerLink]="['/admin/banners']" routerLinkActive="active" class="nav-link">
               <i class="nav-icon fas fa-tree"></i>
               <p>
@@ -135,16 +124,26 @@
             <a [routerLink]="['/admin/company']" routerLinkActive="active"  class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>
               <p>
-                Company
-                <span class="badge badge-info right">2</span>
+                Companies
+                <span class="badge badge-info right">{{ count }}</span>
+              </p>
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a href="../gallery.html" class="nav-link">
+              <i class="nav-icon fa fa-users"></i>
+              <p>
+                Users
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="../gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
               <p>
-                Users
+               Leads 
+                <i class="fas fa-angle-left right"></i>
               </p>
             </a>
           </li>
@@ -153,15 +152,6 @@
               <i class="nav-icon far fa-image"></i>
               <p>
                Gallery
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-envelope"></i>
-              <p>
-               Inquiry
-                <i class="fas fa-angle-left right"></i>
               </p>
             </a>
           </li>

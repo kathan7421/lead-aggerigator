@@ -1,1 +1,128 @@
-<p>companyview works!</p>
+<form [formGroup]="companyviewForm">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <div class="form-group" formGroupName="user">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" formControlName="name" [disabled]="disablebtn">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="user">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" formControlName="email">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="phone">Phone</label>
+            <input type="tel" class="form-control" id="phone" formControlName="phone">
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="gstNumber">GST Number</label>
+            <input type="text" class="form-control" id="gstNumber" formControlName="gst_number">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="website">Website</label>
+            <input type="text" class="form-control" id="website" formControlName="website" required pattern="https?://.+">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="fax">Fax</label>
+            <input type="text" class="form-control" id="fax" formControlName="fax">
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="document">Document</label>
+            <div *ngIf="documentPreview" class="document-preview-container mt-2">
+              <i class="fas fa-folder fa-4x"></i>
+              <div> <span>{{ documentPreview }}</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="logo">Logo</label>
+            <img *ngIf="logoPreview" [src]="logoPreview" alt="Logo Preview" class="img-thumbnail mt-2" style="max-width: 200px;">
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="coverPhoto">Cover Photo</label>
+            <img *ngIf="coverPhotoPreview" [src]="coverPhotoPreview" alt="Cover Photo Preview" class="img-thumbnail mt-2" style="max-width: 200px;">
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="address">Address</label>
+            <textarea class="form-control" id="address" formControlName="address" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="col">
+            <div class="form-group" formGroupName="company">
+              <label for="country">Country</label>
+              <select class="form-control" id="country" formControlName="country" (change)="onCountryChanged($event)">
+                <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id === companyviewForm.get('company.country')?.value">{{ country.name }}</option>
+              </select>
+            </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="state">State</label>
+            <select class="form-control" id="state" formControlName="state" (change)="onStateChanged($event)">
+              <option *ngFor="let state of states" [value]="state.id" [selected]="state.id === companyviewForm.get('company.state')?.value">{{ state.statename }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col">
+        <div class="form-group" formGroupName="company">
+            <label for="city">City</label>
+            <select class="form-control" id="city" formControlName="city">
+              <option *ngFor="let city of cities" [value]="city.id">{{ city.cityName }}</option>
+            </select>
+          </div>
+          </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="registerNumber">Register Number</label>
+            <input type="text" class="form-control" id="registerNumber" formControlName="register_number">
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="tagLine">Tag Line</label>
+            <input type="text" class="form-control" id="tagLine" formControlName="tag_line" required>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="user">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" formControlName="password">
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </form>
+  

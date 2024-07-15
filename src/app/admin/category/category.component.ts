@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SelectItem } from 'primeng/api';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-category',
@@ -14,6 +15,7 @@ import { SelectItem } from 'primeng/api';
 })
 export class CategoryComponent implements OnInit {
   categories: any[] = [];
+  selectedCategories: any[] = [];
   editingCategory: any;
   display: boolean = false;
   categoryForm!: FormGroup;
@@ -29,7 +31,8 @@ export class CategoryComponent implements OnInit {
     private authService: AuthService,
     private toastr: ToastrService,
     private fb: FormBuilder,
-    public dialogService: DialogService
+    public dialogService: DialogService,
+    public route:ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -60,8 +63,6 @@ export class CategoryComponent implements OnInit {
     }
     this.display = true;
   }
-
-
   onFileChange(event: any): void {
     const files = event.target.files;
     const file = files[0];
@@ -72,21 +73,56 @@ export class CategoryComponent implements OnInit {
       reader.onload = () => {
         this.base64textString = reader.result as string;
         this.categoryForm.patchValue({ image: this.base64textString });
-        this.uploadedImageUrl = this.base64textString;
-        this.imagePreviewUrl = this.base64textString; // Update image preview URL with uploaded image
+        this.uploadedImageUrl = reader.result as string;
+        this.imagePreviewUrl = reader.result as string; // Update image preview URL with uploaded image
       };
   
       reader.readAsDataURL(file);
     } else {
       // Clear the image preview if no file is selected
+      this.base64textString = null; // Reset base64textString
       this.imagePreviewUrl = null;
     }
   }
   
   
   
+  
 
-
+  deleteSelectedCategories(): void {
+    if (this.selectedCategories.length === 0) {
+      Swal.fire('No Selection', 'Please select at least one category to delete.', 'info');
+      return;
+    }
+  
+    const categoryIds = this.selectedCategories.map(category => category.id);
+  
+    Swal.fire({
+      title: 'Are You Sure?',
+      text: 'You will not be able to recover these categories!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete them!',
+      cancelButtonText: 'No, keep them'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.categoryService.deleteCategoies(categoryIds).subscribe(
+          response => {
+            this.categories = this.categories.filter(category => !categoryIds.includes(category.id));
+            this.selectedCategories = [];
+            Swal.fire('Deleted!', 'The selected categories have been deleted.', 'success');
+          },
+          error => {
+            console.error('Error deleting categories:', error);
+            Swal.fire('Error!', 'Failed to delete the selected categories.', 'error');
+          }
+        );
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire('Cancelled', 'The selected categories are safe :)', 'info');
+      }
+    });
+  }
+  
 
   getPreviewImage(): string | ArrayBuffer | null {
     if (!this.base64textString && this.imagePreviewUrl) {
@@ -98,6 +134,7 @@ export class CategoryComponent implements OnInit {
   }
   
   onSubmit(): void {
+    this.markAllAsTouched();
     if (this.categoryForm.valid) {
       const formData = this.categoryForm.value;
       if (this.isEditMode) {
@@ -130,12 +167,6 @@ export class CategoryComponent implements OnInit {
   }
   
   
-  
-  
-  
-  
-  
-
   
   setEditMode(isEdit: boolean) {
     this.isEditMode = isEdit;
@@ -184,6 +215,7 @@ export class CategoryComponent implements OnInit {
         this.categoryForm.reset();
         this.loadCategories();
         this.hideDialog();
+        this.getAllCatogary();
       },
       error => {
         this.toastr.error('Error adding category');
@@ -201,7 +233,7 @@ export class CategoryComponent implements OnInit {
         this.base64textString = null; // Clear base64textString after update
         this.imagePreviewUrl = null; // Clear imagePreviewUrl after update
         this.hideDialog();
-        this.loadCategories();
+        this.getAllCatogary();
         
       },
       error => {
@@ -210,11 +242,23 @@ export class CategoryComponent implements OnInit {
     );
   }
 
+
+  getAllCatogary(){
+    this.categoryService.getCategories().subscribe(res => {
+      this.categories = res.data;
+    }) 
+  }
+  
+
   loadCategories(): void {
     if (this.authService.isLoggedIn()) {
-      this.categoryService.getCategories().subscribe(
-        response => {
-          this.categories = response.data;
+      this.route.data.subscribe(
+        (data: any) => {
+          if (data && data.category && data.category.data) {
+            this.categories = data.category.data;
+          } else {
+            console.error('Unexpected data format:', data);
+          }
         },
         error => {
           console.error('Error fetching categories:', error);

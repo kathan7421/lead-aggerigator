@@ -1,0 +1,9 @@
+.ng-invalidk {
+    border: 1px solid red;
+  }
+  button {
+    margin-right: 5px !important;
+}
+img.img-fluid.mt-2 {
+    height: 80px;
+}

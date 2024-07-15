@@ -19,31 +19,33 @@ import { CompanyaddComponent } from './company/companyadd/companyadd.component';
 import { CompanyeditComponent } from './company/companyedit/companyedit.component';
 import { CompanyviewComponent } from './company/companyview/companyview.component';
 import { CountryResolver } from './country/country.resolver';
+import { ProductResolver } from './products/product.resolver';
+import { CategoryResolver } from './category/category.resolver';
+import { BannerResolver } from './banners/banner-resolver';
+import { CmsResolver } from './cms/cms.resolver';
+import { CompanyResolver } from './company/company.resolver';
 
 const adminRoutes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password/:token', component: ResetPasswordComponent },
   { path: 'login', component: LoginComponent, data: { title: 'Login' } },
-  
   {
     path: '',
     canActivate: [AuthGuard],
     component: AdminlayoutComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent, resolve: { counts: DashboardResolver }, data: { title: 'Dashboard' } },
-      { path: 'category', component: CategoryComponent, data: { title: 'Category Management' } },
-      { path: 'product', component: ProductsComponent, data: { title: 'Product Management' } },
+      { path: 'category', component: CategoryComponent, data: { title: 'Category Management' },resolve:{category:CategoryResolver} },
+      { path: 'product', component: ProductsComponent, data: { title: 'Service Management' }, resolve:{products :ProductResolver} },
       { path: 'orders', component: OrdersComponent, data: { title: 'Order Management' } },
-      { path: 'banners', component: BannersComponent, data: { title: 'Banner Management' } },
+      { path: 'banners', component: BannersComponent, data: { title: 'Banner Management' }, resolve:{banners :BannerResolver}},
       { path: 'country', component: CountryComponent, data: { title: 'Country Management' }, resolve: { countries: CountryResolver } },
-      { path: 'cms',component:CmsComponent, data: {title:'Cms Management'} },
-      {path: 'company', 
-    component: CompanyComponent, 
-    data: { title: 'Company Management' },
+      { path: 'cms',component:CmsComponent, data: {title:'Cms Management'} ,resolve: {cmsData: CmsResolver }},
+      {path: 'company', component: CompanyComponent, data: { title: 'Company Management'} , resolve: { data: CompanyResolver },
     children: [
       { path: 'add', component: CompanyaddComponent,data:{title:'Company Add'} },
-      { path: 'edit/:id', component: CompanyeditComponent },
-      { path: 'view/:id', component: CompanyviewComponent },
+      { path: 'edit/:id', component: CompanyeditComponent ,data:{title:'Company Edit'}},
+      { path: 'view/:id', component: CompanyviewComponent ,data:{title:'Company View'} },
     ] },
       { path: '**', component: NotFoundComponent, data: { title: '404 Not Found' } },
     ]

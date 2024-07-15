@@ -4,7 +4,7 @@ export class Counts {
 
     data!: {
       users: number;
-      orders: number;
+      companies: number;
       categories: number;
       products: number;
       // counts: Counts;

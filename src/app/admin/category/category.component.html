@@ -1,28 +1,34 @@
 
-<p-button (click)="showDialog()" label="Add Category +"></p-button>
+<!-- <button (click)="showDialog()" class="btn-primary" ><i class="fas fa-plus"></i></button> -->
+<button class="btn btn-primary" (click)="showDialog()" >
+    <i class="fas fa-plus"></i>
+   </button>
+<button class="btn btn-danger" (click)="deleteSelectedCategories()" [disabled]="selectedCategories.length === 0">
+    <i class="fas fa-trash"></i>
+   </button>
 <p-dialog header="{{ isEditMode ? 'Edit Category' : 'Add New Category' }}" [modal]="true" [(visible)]="visible" [style]="{ width: '50em' }">
     <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
         <div class="flex align-items-center gap-3 mb-3">
-            <label for="name" class="font-semibold w-6rem">Name</label>
-            <input pInputText id="name" formControlName="name" class="flex-auto" autocomplete="off" />
+            <label for="name" class="font-semibold w-6rem">Name <span class="required">*</span></label>
+            <input pInputText id="name" formControlName="name" class="flex-auto" autocomplete="off" placeholder="Enter Category Name" />
             <div *ngIf="categoryForm.controls['name'].invalid && categoryForm.controls['name'].touched" class="text-danger">
                 Name is required
             </div>
         </div>
         
         <div class="flex align-items-center gap-3 mb-3">
-            <input type="file" (change)="onFileChange($event)" accept="image/*" formControlName="image" />
+            <label>Image <span class="required">*</span></label>
+            <input type="file" (change)="onFileChange($event)" formControlName="image" class="form-control" accept="image/*"  />
             <div *ngIf="categoryForm.controls['image'].invalid && categoryForm.controls['image'].touched && !isEditMode" class="text-danger">
                 Image is required
             </div>
-            <div *ngIf="imagePreviewUrl">
-                <img [src]="imagePreviewUrl" alt="Preview Image">
+            <div *ngIf="getPreviewImage()">
+                <img [src]="getPreviewImage()" alt="Preview Image">
               </div>
-            
-        </div>
+         </div>              
         
         <div class="flex align-items-center gap-3 mb-3">
-            <label for="description" class="font-semibold w-6rem">Description</label>
+            <label for="description" class="font-semibold w-6rem">Description <span class="required">*</span></label>
             <textarea pInputText id="description" formControlName="description" class="flex-auto" autocomplete="off"></textarea>
             <div *ngIf="categoryForm.controls['description'].invalid && categoryForm.controls['description'].touched" class="text-danger">
                 Description is required.
@@ -39,9 +45,12 @@
 
 <!-- data grid table  -->
 <div>
-<p-table [value]="categories" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
+<p-table [value]="categories" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [(selection)]="selectedCategories"  selectionMode="checkbox" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
     <ng-template pTemplate="header">
         <tr>
+            <th style="width: 3rem">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+              </th>
             <th>Index</th>
             <th pSortableColumn="id">Category ID <p-sortIcon field="id"></p-sortIcon></th>
             <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
@@ -52,6 +61,9 @@
     </ng-template>
     <ng-template pTemplate="body" let-category let-i="rowIndex">
         <tr>
+            <td>
+                <p-tableCheckbox [value]="category"></p-tableCheckbox>
+              </td>
             <td>{{ i + 1 }}</td>
             <td>{{ category.id }}</td>
             <td>{{ category.name }}</td>

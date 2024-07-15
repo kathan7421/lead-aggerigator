@@ -7,6 +7,7 @@ import { Banners } from './banners.model';
 import { AuthService } from 'src/app/auth-service.service';
 import Swal from 'sweetalert2';
 import { error } from 'jquery';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -17,12 +18,13 @@ import { error } from 'jquery';
 export class BannersComponent implements OnInit {
   bannerForm! : FormGroup;
   banners: Banners[] = [];
+  selectedBanners: any[] =[];
   imagePreviewUrl: string | ArrayBuffer = '';
   visible: boolean = false;
   isEditMode: boolean = false;
   selectedFile: File | null = null;
   selectedBanner!: Banners;
-  constructor(public dialogService: DialogService ,private fb: FormBuilder,private bannerService: BannersService,private toastr: ToastrService,private authService:AuthService) { 
+  constructor(public dialogService: DialogService ,private fb: FormBuilder,private bannerService: BannersService,private toastr: ToastrService,private authService:AuthService,public route:ActivatedRoute) { 
 this.bannerForm = this.fb.group({
   title: ['', Validators.required],
   image: [''],
@@ -76,12 +78,18 @@ ngOnInit(): void {
       }
     );
   }
+  getAllBanners(){
+    this.bannerService.getBanners().subscribe(res => {
+      this.banners = res.banners;
+    }) 
+  }
+  
   loadBanners(): void {
     if (this.authService.isLoggedIn()) {
-      this.bannerService.getBanners().subscribe(
-        (response) => {
-          this.banners = response.banners; // Update to match the structure of the API response
-        },
+      this.route.data.subscribe((data: any) => {
+        this.banners = data.banners.banners; // Access 'banners' using ['banners']
+        console.log('Banners fetched successfully:', this.banners);
+      },
         (error) => {
           console.error('Error fetching banners:', error);
         }
@@ -119,7 +127,8 @@ submitForm(formData:any){
      (response) => {
       this.toastr.success('Banner updated successfully', 'Success');
       this.closeDialog();
-      this.loadBanners();
+      this.getAllBanners();
+      // this.loadBanners();
      },
      (error) => {
       this.toastr.error('Something went wrong', 'Error');
@@ -131,7 +140,7 @@ submitForm(formData:any){
     (response) => {
       this.toastr.success('Banner added successfully', 'Success');
       this.closeDialog();
-      this.loadBanners();
+      this.getAllBanners();
 },
 (error) => {
   this.toastr.error('Something Went Wrong','error');
@@ -196,5 +205,38 @@ changeBannerStatus(bannerId:number,checked:boolean): void {
      this.toastr.error('Something Went Wrong',error);
     }
   )
+}
+deleteSelectedBanners(): void {
+  if (this.  selectedBanners.length === 0) {
+    Swal.fire('No Selection', 'Please select at least one banner to delete.', 'info');
+    return;
+  }
+
+  const bannerIds = this.selectedBanners.map(banner => banner.id);
+
+  Swal.fire({
+    title: 'Are You Sure?',
+    text: 'You will not be able to recover these Banners!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Yes, delete them!',
+    cancelButtonText: 'No, keep them'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      this.bannerService.deleteAll(bannerIds).subscribe(
+        response => {
+          this.banners = this.banners.filter(banner => !bannerIds.includes(banner.id));
+          this.selectedBanners = [];
+          Swal.fire('Deleted!', 'The selected banners have been deleted.', 'success');
+        },
+        error => {
+          console.error('Error deleting banners:', error);
+          Swal.fire('Error!', 'Failed to delete the selected banners.', 'error');
+        }
+      );
+    } else if (result.dismiss === Swal.DismissReason.cancel) {
+      Swal.fire('Cancelled', 'The selected banners are safe :)', 'info');
+    }
+  });
 }
 }

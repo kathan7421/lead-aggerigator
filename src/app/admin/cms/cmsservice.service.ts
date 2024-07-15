@@ -30,4 +30,7 @@ export class CmsserviceService {
   updateCmsStatus(cmsId:number,newStatus:number):Observable<Cms>{
     return this.http.post<Cms>(`${this.apiUrl}/changestatus/${cmsId}`,{status:newStatus});
   }
+  deleteAll(cmsIds:number[]):Observable<DeleteResponse>{
+    return this.http.delete<DeleteResponse>(`${this.apiUrl}`,{body:{cmsIds}});
+  }
 }
