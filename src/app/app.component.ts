@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map, mergeMap } from 'rxjs/operators';
+declare var $: any;
 
 
 @Component({
@@ -15,6 +16,11 @@ export class AppComponent {
 
   isLoginPage(): boolean {
      return this.activatedRoute.firstChild?.snapshot.routeConfig?.path === 'admin/login';
+  }
+
+  ngAfterViewInit() {
+    // Initialize Bootstrap tooltips
+    $('[data-toggle="tooltip"]').tooltip();
   }
   ngOnInit() {
     this.router.events.pipe(

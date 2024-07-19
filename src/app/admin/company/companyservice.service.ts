@@ -27,8 +27,8 @@ export class CompanyserviceService {
   updateCompany(companyId:number,formData: Company):Observable<Company>{
     return this.http.post<Company>(`${this.apiUrl}/update/${companyId}`,formData);
   }
-  getCompanyById(companyId:number):Observable<{ user:User,company: Company}>{
-    return this.http.get<{user:User, company: Company}>(`${this.apiUrl}/${companyId}`);
+  getCompanyById(companyId:number):Observable<{company:Company}>{
+    return this.http.get<{company:Company}>(`${this.apiUrl}/${companyId}`);
   }
   activeCompany(user_id:number):Observable<Company>{
     return this.http.post<Company>(`${this.apiUrl}/activecompany/${user_id}`,{active:true});
@@ -39,6 +39,9 @@ export class CompanyserviceService {
   getCount(): Observable<CountResponse> {
     // Assuming your backend API expects a POST request to get the count
     return this.http.post<CountResponse>(`${this.apiUrl}/getcountcompany`, {});
+  }
+  exportCompaniesToCsv() {
+    return this.http.get(this.apiUrl, { responseType: 'blob' });
   }
  
   

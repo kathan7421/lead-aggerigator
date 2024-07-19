@@ -50,26 +50,17 @@ export class CompanyviewComponent implements OnInit {
         this.router.navigate(['/admin/company']); // Navigate to company list if ID is not found
       }
     });
-   
-   
-   
-
-  }
+   }
 
   initForm(): void {
     this.companyviewForm = this.fb.group({
-      user: this.fb.group({
+    company: this.fb.group({
         id: [''],
         name: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
-        password: ['']
-      }),
-      company: this.fb.group({
-        id: [''],
-        name: ['', Validators.required],
+        password: [''],
         description: [''],
         fax: [''],
-        email: ['', [Validators.required, Validators.email]],
         phone: ['', Validators.required],
         website: [''],
         address: [''],
@@ -89,20 +80,17 @@ export class CompanyviewComponent implements OnInit {
 
   loadCompanyDetailsView(companyId: number): void {
     this.companyService.getCompanyById(companyId).subscribe(
-      (response: { user: User, company: Company }) => {
-        const { user, company } = response;
+      (response: { company: Company }) => {
+        const { company } = response;
 
         // Patch user and company data to the form
         this.companyviewForm.patchValue({
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            password: user.password
-          },
+        
           company: {
             id: company.id,
+            user_id:company.user_id,
             name: company.name,
+            password:company.password,
             description: company.description,
             fax: company.fax,
             email: company.email,

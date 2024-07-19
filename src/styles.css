@@ -64,3 +64,16 @@ section.content {
     border-top-right-radius: 3px;
     border-top-left-radius: 3px;
 }
+
+/* Custom tooltip styles */
+.tooltip {
+    font-size: 12px; /* Set the font size */
+    padding: 5px; /* Set the padding */
+    background-color: #000000 !important;
+    color: #ffffff;
+  }
+  
+  .tooltip-inner {
+    padding: 5px; /* Set the padding for the tooltip content */
+  }
+  

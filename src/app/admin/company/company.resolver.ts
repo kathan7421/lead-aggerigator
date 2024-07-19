@@ -14,9 +14,11 @@ export class CompanyResolver implements Resolve<{ data: Company[] }> {
   constructor(private companyService: CompanyserviceService) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<{ data: Company[] }> {
+    
     return this.companyService.getCompany();
     
   }
+ 
 }
 
 

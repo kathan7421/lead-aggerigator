@@ -1,36 +1,35 @@
 
  
-    <form [formGroup]="companyForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="companyForm">
         <div class="container-fluid">
             <div class="row">
         <div class="col">
-      <div class="form-group" formGroupName="user">
+      <div class="form-group" formGroupName="company">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="name" formControlName="name" >
-        <!-- <div *ngIf="hasError('name', 'required')" class="invalid-feedback">
+        <div *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched" class="invalid-feedback">
           Name is required
-        </div> -->
+        </div>
       </div>
     </div>
     <div class="col">
-      <div class="form-group" formGroupName="user">
+      <div class="form-group" formGroupName="company">
         <label for="email">Email</label>
         <input type="email" class="form-control" id="email" formControlName="email" >
-        <!-- <div *ngIf="hasError('email', 'required')" class="invalid-feedback">
-          Email is required
-        </div> -->
-        <!-- <div *ngIf="hasError('email', 'email')" class="invalid-feedback">
-          Please enter a valid email address
-        </div> -->
+        <div *ngIf="companyForm.get('email')?.invalid && companyForm.get('email')?.touched" class="invalid-feedback">
+          <div *ngIf="companyForm.get('email')?.hasError('required')">Email is required.</div>
+          <div *ngIf="companyForm.get('email')?.hasError('email')">Invalid email format.</div>
+          <div *ngIf="companyForm.get('email')?.hasError('emailExists')">Email already exists in the database.</div>
+        </div>
       </div>
   </div>
   <div class="col">
       <div class="form-group" formGroupName="company">
         <label for="phone">Phone</label>
         <input type="tel" class="form-control" id="phone" formControlName="phone" >
-        <!-- <div *ngIf="hasError('phone', 'required')" class="invalid-feedback">
-          Phone number is required
-        </div> -->
+        <div *ngIf="companyForm.get('phone')?.invalid && companyForm.get('phone')?.touched" class="invalid-feedback">
+          Phone Number is required
+        </div>
       </div>
   </div>
   </div>
@@ -46,7 +45,6 @@
     <div class="form-group" formGroupName="company">
       <label for="website">Website</label>
       <input type="text" class="form-control" id="website" formControlName="website" required pattern="https?://.+">
-
 </div>
     </div>
     <div class="col">
@@ -65,7 +63,7 @@
           <!-- Replace this with your folder icon -->
          
           <!-- Optionally, you can display the document name or other information -->
-         <div> <span>{{ documentPreview }}</span></div>
+         <!-- <div> <span>{{ documentPreview }}</span></div>s -->
         </div>
       </div>
       </div>
@@ -101,31 +99,6 @@
       </div>
   </div>
   </div>
-  <div class="row mt-4">
-    <div class="col">
-      <div class="form-group" formGroupName="company">
-        <label for="description">Description</label>
-        <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group" formGroupName="company">
-        <label for="address">Address</label>
-        <textarea class="form-control" id="address" formControlName="address" rows="3" ></textarea>
-        <!-- <div *ngIf="hasError('address', 'required')" class="invalid-feedback">
-          Address is required
-        </div> -->
-      </div>
-     
-  </div>
-  <div class="col">
-      <div class="form-group" formGroupName="company">
-        <label for="country">Country</label>
-        <select class="form-control" id="country" formControlName="country" (change)="onCountryChanged($event)">
-          <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id === companyForm.get('company.country')?.value">{{ country.name }}</option>
-        </select>
-      </div>
-      </div>
       </div>
       <div class="row mt-4">
         <div class="col">
@@ -136,9 +109,6 @@
                 </select>
               </div>
         </div>
-     
-      
-      
         <div class="col">
   
       <div class="form-group" formGroupName="company">
@@ -169,19 +139,45 @@
       </div>
     </div>
     <div class="col">
-      <div class="form-group" formGroupName="user">
+      <div class="form-group" formGroupName="company">
         <label for="password">Password</label>
         <input type="password" class="form-control" id="password" formControlName="password" >
     </div>
 </div>
-</div>
 <div class="col">
-      <button type="submit" class="btn btn-primary" >Update</button>
+  <div class="form-group" formGroupName="company">
+    <label for="country">Country</label>
+    <select class="form-control" id="country" formControlName="country" (change)="onCountryChanged($event)">
+      <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id === companyForm.get('company.country')?.value">{{ country.name }}</option>
+    </select>
+  </div>
+  </div>
+</div>
+<div class="row mt-4">
+  <div class="col">
+    <div class="form-group" formGroupName="company">
+      <label for="description">Description</label>
+      <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+    </div>
+  </div>
+  <div class="col">
+    <div class="form-group" formGroupName="company">
+      <label for="address">Address</label>
+      <textarea class="form-control" id="address" formControlName="address" rows="3" ></textarea>
+      <!-- <div *ngIf="hasError('address', 'required')" class="invalid-feedback">
+        Address is required
+      </div> -->
+    </div>
+   
+</div>
+<div class="row mt-4">
+<div class="col">
+      <button type="submit" class="btn btn-primary" (click)="onSubmit()">Update</button>
       <button type="button" class="btn btn-secondary ml-2" (click)="resetForm()">Reset</button>
       </div>
     </div>
       </div>
-    
+        </div>
     </form>
   
   

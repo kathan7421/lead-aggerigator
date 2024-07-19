@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Company } from '../company.model'; // Import your Company model or use any[]
 import { LocationService } from 'src/app/shared/location/location.service';
 
+
 @Component({
   selector: 'app-companyadd',
   templateUrl: './companyadd.component.html',

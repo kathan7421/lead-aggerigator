@@ -1,15 +1,34 @@
 <div *ngIf="!isChildRouterActive()">
-  <a [routerLink]="['add']" class="btn btn-primary"><i class="fas fa-plus"></i></a>
-  <button class="btn btn-danger" (click)="deleteSelectedCompanies()" [disabled]="selectedCompanies.length === 0">
+ 
+  <button class="btn btn-info" (click)="showUploadDialog()" pTooltip="Import Company" tooltipPosition="top"><i class="fa fa-download"></i></button>
+
+  <p-dialog header="Import Company" [(visible)]="displayUploadDialog" [modal]="true" [responsive]="true" [style]="{width: '50vw'}">
+    <form [formGroup]="uploadForm" (ngSubmit)="onSubmit()" class="import">
+      <p-fileUpload name="file" class="test-upload" mode="basic" accept=".csv" (onSelect)="onFileChange($event)" chooseLabel="Choose"></p-fileUpload>
+      <div *ngIf="uploadForm.controls['file'].invalid && uploadForm.controls['file'].touched">
+        <small class="text-danger">File is required and must be a CSV</small>
+      </div>
+      <button type="submit" pButton label="Upload" icon="pi pi-check" [disabled]="uploadForm.invalid"></button>
+    </form>
+  </p-dialog>
+  
+  <a [routerLink]="['add']" class="btn btn-primary" pTooltip="Add Company" tooltipPosition="top" title="Add Company">
+    <i class="fas fa-plus"></i>
+  </a>
+  
+
+  
+  <button class="btn btn-danger" (click)="deleteSelectedCompanies()" pTooltip="Bulk Delete Company" tooltipPosition="top" >
    <i class="fas fa-trash"></i>
   </button>
-  <button class="btn btn-success" (click)="refresh()">
+  <button class="btn btn-success" pTooltip="Refresh Company" tooltipPosition="top" (click)="refresh()">
     <i class="fa fa-refresh"  aria-hidden="true"></i>
   </button>
+  <button class="btn btn-warning" pTooltip="Export Company" tooltipPosition="top" (click)="exportCsv()"><i class='fas fa-file-export'></i></button>
   
 
   <p-table [value]="companies" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name', 'status']"
-           [(selection)]="selectedCompanies" selectionMode="checkbox">
+           [(selection)]="selectedCompanies"  selectionMode="checkbox">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 3rem">
@@ -34,7 +53,9 @@
         <td>{{ company.description }}</td>
         <td><img [src]="company.logo" alt="Company Image"></td>
         <td>
-          <p-inputSwitch class="switch" [ngModel]="company.status === '1'" (onChange)="changeCountryStatus(company.user_id, $event.checked)"></p-inputSwitch>
+          <p-inputSwitch class="switch" [ngModel]="company.status" (onChange)="changeCountryStatus(company.user_id, $event.checked)"></p-inputSwitch>
+           {{company.status}} 
+           
         </td>
      <td>
           <button class="btn btn-success" (click)="activeCompany(company.user_id)" [disabled]="disableStates[company.user_id]">Approved</button>
@@ -43,6 +64,7 @@
           <button class="btn btn-danger" (click)="deleteCompany(company.user_id)"><i class="fas fa-trash"></i></button>
           <a class="btn btn-success" [routerLink]="['view', company.user_id]"><i class="fas fa-eye"></i></a>
           <a class="btn btn-primary" [routerLink]="['edit', company.user_id]"><i class="fas fa-edit"></i></a>
+          
         </td>
       </tr>
     </ng-template>

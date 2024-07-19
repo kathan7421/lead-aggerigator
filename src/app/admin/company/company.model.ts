@@ -3,7 +3,7 @@ export class Company {
 	name: string | null = null;
 	email: string | null = null;
 	image?:string | null = null;
-	status?:number = 0;
+	status?:boolean;
     password:any;
     description:string | null = null;
     fax: string | null = null;
@@ -19,10 +19,11 @@ export class Company {
     state: string | null = null;
     tag_line: string | null = null;
     document: string | null = null;
-    is_active?: string | null = null;
+    is_active?: number;
     user_id: number =0;
     // user_type:number=0;
     isActive?: boolean;
+    
 	  slug?: string  | null = null;
 
 }

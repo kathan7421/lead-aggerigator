@@ -8,16 +8,19 @@ import { AuthService } from 'src/app/auth-service.service';
 import Swal from 'sweetalert2';
 import { ConfirmationService } from 'primeng/api';
 import { Subscription, filter } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CompanyUploadService } from './company-upload.service';
 
 @Component({
   selector: 'app-company',
   templateUrl: './company.component.html',
   styleUrls: ['./company.component.css']
+  
 })
-export class CompanyComponent implements OnInit, OnDestroy{
+export class CompanyComponent implements OnInit{
 
 
-  constructor(private router:Router,private route: ActivatedRoute, private confirmationService: ConfirmationService,private company:CompanyserviceService,private authService:AuthService,public toastr: ToastrService,) {
+  constructor( private fb: FormBuilder, private uploadService: CompanyUploadService,private router:Router,private route: ActivatedRoute, private confirmationService: ConfirmationService,private company:CompanyserviceService,private authService:AuthService,public toastr: ToastrService,) {
   }
   companies: Company[] = []; 
   selectedCompanies: any[] = [];
@@ -25,27 +28,19 @@ export class CompanyComponent implements OnInit, OnDestroy{
   isLoading: boolean = false;
   disableStates: { [key: number]: boolean } = {};
   routerSubscription: Subscription | null = null;
+  uploadForm!: FormGroup;
+  file: File | null = null;
+  displayUploadDialog: boolean = false;
   
   ngOnInit(): void {
-    // this.getall();
+    this.uploadForm = this.fb.group({
+      file: [null, Validators.required]
+    });
+    this.getall();
     // this.loadCompany();
 
-    this.companies = this.route.snapshot.data['data'].data;
-    // this.router.events.subscribe(event => {
-    //   if (event instanceof NavigationEnd) {
-    //     this.loadCompany(); // Load data on every navigation end
-    //   }
-    // });
-    
-
-    this.routerSubscription = this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => {
-        if (!this.isChildRouterActive()) {
-          this.loadCompany();
-        }
-      });
-    const disableState = localStorage.getItem('disableState');
+    // this.companies = this.route.snapshot.data['data'].data;
+        const disableState = localStorage.getItem('disableState');
     if (disableState) {
         try {
             const parsedState = JSON.parse(disableState);
@@ -61,15 +56,42 @@ export class CompanyComponent implements OnInit, OnDestroy{
         this.disableStates = {};
     }
   }
+  showUploadDialog() {
+    this.displayUploadDialog = true;
+  }
 
-  ngOnDestroy(): void {
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
+  onFileChange(event: any) {
+    const file = event.files[0]; // PrimeNG FileUpload event
+    if (file && (file.type === 'application/vnd.ms-excel' || file.type === 'text/csv')) {
+      this.file = file;
+      this.uploadForm.patchValue({ file: this.file });
+      this.uploadForm.get('file')?.markAsTouched();
+      this.uploadForm.get('file')?.markAsDirty();
+    } else {
+      this.toastr.error('Invalid file format. Please upload a CSV file.');
+      this.uploadForm.reset();
     }
   }
-  
+
+  onSubmit() {
+    if (this.uploadForm.invalid || !this.file) {
+      this.toastr.error('Form is invalid. Please upload a valid CSV file.');
+      return;
+    }
+
+    this.uploadService.uploadFile(this.file).subscribe(
+      (response) => {
+        this.toastr.success('File uploaded successfully');
+        // this.getall();
+        this.loadCompany();
+      },
+      (error) => {
+        this.toastr.error('File upload failed');
+      }
+    );
+  }
   refresh(){
-    this.loadCompany();
+    this.getall();
   }
  
   isChildRouterActive():boolean{
@@ -77,19 +99,19 @@ export class CompanyComponent implements OnInit, OnDestroy{
    }
    getall():void {
    this.route.data.subscribe((response: any) => {
-    console.log('Raw data from resolver:', response); // Log raw data
+    this.isLoading = true;
 
     if (response && response.data ) {
       const companies = response.data.data; // Access companies array
-
+    
+      this.companies =companies;
+      this.companies = companies.map((company: any) => {
+        if (!company.description) {
+          company.description = '-';
+        }
+        return company;
+      });
       if (companies.length > 0) {
-        this.companies = companies.map((company: any) => {
-          if (!company.description) {
-            company.description = '-';
-          }
-          return company;
-        });
-
         console.log('Companies fetched successfully:', this.companies);
       } else {
         console.error('No company data found.');
@@ -101,7 +123,49 @@ export class CompanyComponent implements OnInit, OnDestroy{
     console.error('Error fetching company data:', err);
   });
 }
+exportCsv() {
+  if (this.selectedCompanies.length === 0) {
+    console.error('No companies selected for export.');
+    this.toastr.warning('Please Select atleast 1 Company');
+    return;
+  }
 
+  const selectedCompaniesData = this.selectedCompanies.map(company => ({
+    ID: company.id,
+    Name: company.name,
+    Description: company.description,
+    Email: company.email,
+    'Created At': company.created_at,
+    'Updated At': company.updated_at,
+    // Status: company.status === 1 ? 'Active' : 'Inactive',
+    'phone':company.phone,
+    'tag_line':company.tag_line,
+    Logo: company.logo // Adjust as per your actual data structure
+    // Add more fields as needed
+  }));
+
+  const csvContent = this.convertToCSV(selectedCompaniesData);
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const downloadLink = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+
+  downloadLink.href = url;
+  downloadLink.setAttribute('download', 'companies.csv');
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+}
+
+private convertToCSV(data: any[]) {
+  if (!data || data.length === 0) {
+    console.error('No data to convert to CSV.');
+    return '';
+  }
+
+  const header = Object.keys(data[0]).join(',');
+  const rows = data.map(obj => Object.values(obj).join(','));
+  return `${header}\n${rows.join('\n')}`;
+}
    loadCompany(): void {
     if (this.authService.isLoggedIn()) {
       this.isLoading = true;
@@ -114,21 +178,10 @@ export class CompanyComponent implements OnInit, OnDestroy{
             if (!company.description) {
               company.description = '-';
             }
-  
-            // Return the modified company object
             return company;
           });
   
           console.log('Companies fetched successfully:', this.companies);
-  
-          // Initialize disableStates if not already initialized
-          this.companies.forEach(company => {
-            if (!(company.user_id in this.disableStates)) {
-              this.disableStates[company.user_id] = false;
-            }
-          });
-  
-          // Save disableStates to localStorage
           localStorage.setItem('disableState', JSON.stringify(this.disableStates));
   
           this.isLoading = false;
@@ -144,16 +197,21 @@ export class CompanyComponent implements OnInit, OnDestroy{
   }
 
   changeCountryStatus(companyId: number, checked: boolean): void {
-    const newStatus = checked ? 1 : 0; // Convert boolean checked value to 1 or 0
-    this.company.updateCompanyStatus(companyId, newStatus).subscribe(
+    this.company.updateCompanyStatus(companyId, checked ? 1 : 0).subscribe(
+     
       (response: Company) => {
-        // Determine the success message based on the newStatus
-        const message = newStatus === 1 ? 'You have made the status Active' : 'You have made the status Inactive';
-        this.toastr.success(message, 'Company Status Updated Successfully'); // Show success message using Toastr
+        // this.getall();
+        const message = checked ? 'You have made the status Active' : 'You have made the status Inactive';
+        this.toastr.success(message, 'Company Status Updated Successfully');
+
+        // Update the local company status to avoid blinking effect
+        const company = this.companies.find(c => c.user_id === companyId);
+        if (company) {
+          company.status = checked;
+        }
       },
       error => {
-        console.error('Error Changing status', error); // Log error to console if update fails
-        // Handle error state if needed
+        console.error('Error Changing status', error);
       }
     );
   }
@@ -166,6 +224,7 @@ export class CompanyComponent implements OnInit, OnDestroy{
     this.company.activeCompany(user_id).subscribe(
       (response: Company) => {
         this.toastr.success('Company Activated Successfully', 'Company Status Updated Successfully');
+        
       },
       error => {
         console.error('Error activating company', error);
@@ -188,8 +247,9 @@ export class CompanyComponent implements OnInit, OnDestroy{
            this.company.deleteCompany(companyId).subscribe(
              response => {
                console.log('Company deleted successfully:', response);
-               this.getall();
+              
                Swal.fire('Deleted!', 'The Country has been deleted.', 'success');
+               this.loadCompany();
              },
              error => {
                console.error('Error deleting Company:', error);
@@ -224,6 +284,7 @@ export class CompanyComponent implements OnInit, OnDestroy{
             this.companies = this.companies.filter(company => !companyIds.includes(company.id));
             this.selectedCompanies = [];
             Swal.fire('Deleted!', 'The selected companies have been deleted.', 'success');
+            this.getall();
           },
           error => {
             console.error('Error deleting companies:', error);

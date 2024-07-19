@@ -2,13 +2,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <div class="form-group" formGroupName="user">
+          <div class="form-group" formGroupName="company">
             <label for="name">Name</label>
             <input type="text" class="form-control" id="name" formControlName="name" [disabled]="disablebtn">
           </div>
         </div>
         <div class="col">
-          <div class="form-group" formGroupName="user">
+          <div class="form-group" formGroupName="company">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" formControlName="email">
           </div>
@@ -63,27 +63,8 @@
           </div>
         </div>
       </div>
-      <div class="row mt-4">
-        <div class="col">
-          <div class="form-group" formGroupName="company">
-            <label for="description">Description</label>
-            <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
-          </div>
-        </div>
-        <div class="col">
-          <div class="form-group" formGroupName="company">
-            <label for="address">Address</label>
-            <textarea class="form-control" id="address" formControlName="address" rows="3"></textarea>
-          </div>
-        </div>
-        <div class="col">
-            <div class="form-group" formGroupName="company">
-              <label for="country">Country</label>
-              <select class="form-control" id="country" formControlName="country" (change)="onCountryChanged($event)">
-                <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id === companyviewForm.get('company.country')?.value">{{ country.name }}</option>
-              </select>
-            </div>
-      </div>
+     
+       
       <div class="row mt-4">
         <div class="col">
           <div class="form-group" formGroupName="company">
@@ -116,12 +97,33 @@
           </div>
         </div>
         <div class="col">
-          <div class="form-group" formGroupName="user">
+          <div class="form-group" formGroupName="company">
             <label for="password">Password</label>
             <input type="password" class="form-control" id="password" formControlName="password">
           </div>
         </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="country">Country</label>
+            <select class="form-control" id="country" formControlName="country" (change)="onCountryChanged($event)">
+              <option *ngFor="let country of countries" [value]="country.id" [selected]="country.id === companyviewForm.get('company.country')?.value">{{ country.name }}</option>
+            </select>
+          </div>
+    </div>
       </div>
+      <div class="row mt-4">
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" formControlName="description" rows="3"></textarea>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group" formGroupName="company">
+            <label for="address">Address</label>
+            <textarea class="form-control" id="address" formControlName="address" rows="3"></textarea>
+          </div>
+        </div>
     </div>
     </div>
   </form>

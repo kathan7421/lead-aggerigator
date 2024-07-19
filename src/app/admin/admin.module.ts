@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 // import { CommonModule } from '@angular/common';
-
+import { TooltipModule } from 'primeng/tooltip';
 import { AdminRoutingModule } from './admin-routing.module';
 import { CommonModule } from '@angular/common';
 import { SharedModule } from '../shared/shared.module';
@@ -16,14 +16,15 @@ import { CompanyviewComponent } from './company/companyview/companyview.componen
 import { TableModule } from 'primeng/table';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { UserComponent } from './user/user.component';
+// import { CompanyRoutingModule } from './company/company.routing.module';
 @NgModule({
   declarations: [
    ForgotPasswordComponent,
    ResetPasswordComponent,
-   CompanyComponent,
-   CompanyaddComponent,
-   CompanyeditComponent,
-   CompanyviewComponent,
+  //  CompanyComponent,
+  //  CompanyaddComponent,
+  //  CompanyeditComponent,
+  //  CompanyviewComponent,
    UserComponent,
   //  CmsComponent,
   ],
@@ -36,6 +37,7 @@ import { UserComponent } from './user/user.component';
     EditorModule,
     TableModule,
     InputSwitchModule,
+    TooltipModule,
   ]
 })
 export class AdminModule { }

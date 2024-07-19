@@ -8,3 +8,19 @@ button {
 a.btn.btn-success {
     margin-right: 5px;
 }
+.import {
+    /* float: right; */
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
+
+.test-upload {
+    position: relative;
+    overflow: hidden;
+    margin: 10px;
+}
+.p-button:disabled {
+    cursor: default;
+    margin: 10px;
+}
