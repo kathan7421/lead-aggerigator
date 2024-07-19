@@ -12,15 +12,15 @@ a.btn.btn-success {
     /* float: right; */
     display: flex;
     justify-content: center;
-    margin: 10px;
+    /* margin: 10px; */
 }
 
 .test-upload {
     position: relative;
     overflow: hidden;
-    margin: 10px;
+    /* margin: 10px; */
 }
 .p-button:disabled {
     cursor: default;
-    margin: 10px;
+    /* margin: 10px; */
 }

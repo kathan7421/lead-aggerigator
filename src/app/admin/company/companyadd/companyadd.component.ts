@@ -6,6 +6,8 @@ import { AuthService } from 'src/app/auth-service.service';
 import { ActivatedRoute } from '@angular/router';
 import { Company } from '../company.model'; // Import your Company model or use any[]
 import { LocationService } from 'src/app/shared/location/location.service';
+import { emailExistsValidator } from 'src/app/shared/email-exists.validator';
+import { EmailCheckService } from 'src/app/shared/email-check.service';
 
 
 @Component({
@@ -35,12 +37,15 @@ export class CompanyaddComponent implements OnInit {
     public authService: AuthService,
     public route: ActivatedRoute,
     private locationService: LocationService,
+    private userService: EmailCheckService,
   ) {}
 
   ngOnInit(): void {
     this.companyForm = this.formBuilder.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required, Validators.email],
+      [emailExistsValidator(this.userService, this.companies?.user_id || 0)]
+    ],
       phone: ['', Validators.required],
       address: ['', Validators.required],
       logo: [''],

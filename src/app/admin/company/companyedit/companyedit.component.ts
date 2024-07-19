@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/auth-service.service';
 import { Company } from '../company.model';
 import { LocationService } from 'src/app/shared/location/location.service';
 import { User } from '../../user/user.model';
+import { emailExistsValidator } from 'src/app/shared/email-exists.validator';
+import { EmailCheckService } from 'src/app/shared/email-check.service';
 
 @Component({
   selector: 'app-companyedit',
@@ -38,7 +40,8 @@ export class CompanyeditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private authService: AuthService,
-    private locationService: LocationService // Assuming you have a service to fetch locations
+    private locationService: LocationService, // Assuming you have a service to fetch locations
+    private userService:EmailCheckService
   ) { }
 
   ngOnInit(): void {
@@ -48,7 +51,9 @@ export class CompanyeditComponent implements OnInit {
       // }),
       company: this.formBuilder.group({
         name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
+        email: ['', [Validators.required, Validators.email],
+        emailExistsValidator(this.userService,this.company?.user_id ?? -1) 
+      ],
         password: [
           '',
           [

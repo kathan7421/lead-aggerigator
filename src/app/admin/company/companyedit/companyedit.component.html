@@ -19,7 +19,7 @@
         <div *ngIf="companyForm.get('email')?.invalid && companyForm.get('email')?.touched" class="invalid-feedback">
           <div *ngIf="companyForm.get('email')?.hasError('required')">Email is required.</div>
           <div *ngIf="companyForm.get('email')?.hasError('email')">Invalid email format.</div>
-          <div *ngIf="companyForm.get('email')?.hasError('emailExists')">Email already exists in the database.</div>
+          <div *ngIf="companyForm.get('email')?.hasError('emailExists')">Email already exists</div>
         </div>
       </div>
   </div>

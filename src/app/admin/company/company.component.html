@@ -8,7 +8,7 @@
       <div *ngIf="uploadForm.controls['file'].invalid && uploadForm.controls['file'].touched">
         <small class="text-danger">File is required and must be a CSV</small>
       </div>
-      <button type="submit" pButton label="Upload" icon="pi pi-check" [disabled]="uploadForm.invalid"></button>
+      <p-button type="submit" class="ms-2"  label="Upload" icon="pi pi-check" [disabled]="uploadForm.invalid"></p-button>
     </form>
   </p-dialog>
   
@@ -54,7 +54,7 @@
         <td><img [src]="company.logo" alt="Company Image"></td>
         <td>
           <p-inputSwitch class="switch" [ngModel]="company.status" (onChange)="changeCountryStatus(company.user_id, $event.checked)"></p-inputSwitch>
-           {{company.status}} 
+           <!-- {{company.status}}  -->
            
         </td>
      <td>
