@@ -1,18 +1,21 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class EmailCheckService {
-    private apiUrl = `${environment.apibaseUrl}`;
+  private apiUrl = `${environment.apibaseUrl}check-email-exists`;
+
   constructor(private http: HttpClient) {}
 
-  checkEmailExists(email: string,userId:number): Observable<boolean> {
-    return this.http.get<boolean>(`${this.apiUrl}/check-email`, {
-        params: { email, userId: userId.toString() }
-      });
+  checkEmailExists(email: string, id?: number): Observable<{ exists: boolean }> {
+    let url = `${this.apiUrl}?email=${email}`;
+    if (id !== undefined && id !== null) {
+      url += `&id=${id}`;
+    }
+    return this.http.get<{ exists: boolean }>(url);
   }
 }

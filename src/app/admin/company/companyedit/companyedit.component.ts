@@ -45,15 +45,16 @@ export class CompanyeditComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(params => {
+      this.companyId = +params.get('id')!;
+    });
     this.companyForm = this.formBuilder.group({
       // company: this.formBuilder.group({
 
       // }),
       company: this.formBuilder.group({
         name: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email],
-        emailExistsValidator(this.userService,this.company?.user_id ?? -1) 
-      ],
+        email: ['', [Validators.required, Validators.email], [emailExistsValidator(this.userService, this.companyId)]],
         password: [
           '',
           [
@@ -78,10 +79,13 @@ export class CompanyeditComponent implements OnInit {
         tag_line: ['', Validators.required]
       })
     });
-
+  
+    
+  
     this.route.data.subscribe((res: any) => {
       console.log(res.company.company);
       let company: Company = res.company.company;
+    
       this.companyForm.patchValue({
         company: {
           id: company.id,
@@ -108,7 +112,10 @@ export class CompanyeditComponent implements OnInit {
 
           // Add other company fields as needed
         }
+        
+        
       });
+      
       //  console.log(company);
       if (company.logo) {
         this.logoPreview = company.logo;
@@ -308,8 +315,14 @@ export class CompanyeditComponent implements OnInit {
         }
       });
     } else {
-      
+      this.companyForm.markAllAsTouched();
       this.toastr.error('Form is invalid. Please check all fields.');
+    
     }
+    
+  }
+ 
+  hasError(controlName: string, errorName: string): boolean {
+    return this.companyForm.get(controlName)?.hasError(errorName) || false;
   }
 }  

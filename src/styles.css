@@ -76,4 +76,13 @@ section.content {
   .tooltip-inner {
     padding: 5px; /* Set the padding for the tooltip content */
   }
+  .gold-rating .p-rating-star {
+    color: gold !important;
+  }
   
+  .gold-rating .p-rating .p-rating-icon {
+    color: gold !important;
+  }
+  .p-rating .p-rating-icon.pi-star-fill {
+    color: gold !important;
+}

@@ -37,15 +37,13 @@ export class CompanyaddComponent implements OnInit {
     public authService: AuthService,
     public route: ActivatedRoute,
     private locationService: LocationService,
-    private userService: EmailCheckService,
+    private emailCheckService: EmailCheckService,
   ) {}
 
   ngOnInit(): void {
     this.companyForm = this.formBuilder.group({
       name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email],
-      [emailExistsValidator(this.userService, this.companies?.user_id || 0)]
-    ],
+      email: ['', [Validators.required, Validators.email], [emailExistsValidator(this.emailCheckService)]],
       phone: ['', Validators.required],
       address: ['', Validators.required],
       logo: [''],
@@ -69,7 +67,6 @@ export class CompanyaddComponent implements OnInit {
       register_number: [''],
       tag_line: ['', Validators.required]
     });
-    
     if (this.companyForm.valid) {
       this.disablebtn = false;
     }

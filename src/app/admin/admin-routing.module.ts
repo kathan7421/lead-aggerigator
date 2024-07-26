@@ -25,6 +25,11 @@ import { BannerResolver } from './banners/banner-resolver';
 import { CmsResolver } from './cms/cms.resolver';
 import { CompanyResolver } from './company/company.resolver';
 import { CompanyModule } from './company/company.module';
+import { InquiryComponent } from './inquiry/inquiry.component';
+import { InquiryResolver } from './inquiry/inquiry.resolver';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { ReviewResolver } from './reviews/reviews.resolver';
+
 
 const adminRoutes: Routes = [
   { path: 'forgot-password', component: ForgotPasswordComponent },
@@ -43,6 +48,9 @@ const adminRoutes: Routes = [
       { path: 'country', component: CountryComponent, data: { title: 'Country Management' }, resolve: { countries: CountryResolver } },
       { path: 'cms',component:CmsComponent, data: {title:'Cms Management'} ,resolve: {cmsData: CmsResolver }},
       { path: 'company', loadChildren: () => import('./company/company.module').then(m => m.CompanyModule) }, // Lazy load CompanyModule 
+      {path:'leads',component:InquiryComponent,data:{title:'Leads Management'},resolve: {data:InquiryResolver}},
+      {path:'reviews',component:ReviewsComponent,data:{title:'Reviews Management'},resolve: {data:ReviewResolver}},
+
       { path: '**', component: NotFoundComponent, data: { title: '404 Not Found' } },
     ]
   },

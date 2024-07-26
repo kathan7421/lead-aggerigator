@@ -16,6 +16,7 @@ import { DialogModule } from 'primeng/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppModule } from '../app.module';
 import { LocationSelectorComponent } from './location/location.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { LocationSelectorComponent } from './location/location.component';
     EditorModule,
     ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
     
     
     // Other modules as needed (FormsModule, ReactiveFormsModule, etc.)

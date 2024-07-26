@@ -18,12 +18,14 @@
             'is-invalid': (companyForm.get('email')?.invalid && companyForm.get('email')?.touched) || companyForm.get('email')?.hasError('emailExists'),
             'is-valid': companyForm.get('email')?.valid && companyForm.get('email')?.touched
           }">
-        <div *ngIf="companyForm.get('email')?.invalid && companyForm.get('email')?.touched" class="invalid-feedback">
+        <div *ngIf="companyForm.get('email')?.touched && companyForm.get('email')?.invalid" class="invalid-feedback">
           <div *ngIf="companyForm.get('email')?.hasError('required')">Email is required.</div>
           <div *ngIf="companyForm.get('email')?.hasError('email')">Invalid email format.</div>
           <div *ngIf="companyForm.get('email')?.hasError('emailExists')">Email already exists in the database.</div>
         </div>
       </div>
+      
+      
       <div class="col">
         <label for="exampleInputEmail1" class="form-label">Tag Line</label>
         <input type="text" class="form-control" formControlName="tag_line" id="exampleInputEmail1"

@@ -1,34 +1,39 @@
 
  
     <form [formGroup]="companyForm">
-        <div class="container-fluid">
-            <div class="row">
-        <div class="col">
-      <div class="form-group" formGroupName="company">
-        <label for="name">Name</label>
-        <input type="text" class="form-control" id="name" formControlName="name" >
-        <div *ngIf="companyForm.get('name')?.invalid && companyForm.get('name')?.touched" class="invalid-feedback">
-          Name is required
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group" formGroupName="company">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" id="email" formControlName="email" >
-        <div *ngIf="companyForm.get('email')?.invalid && companyForm.get('email')?.touched" class="invalid-feedback">
-          <div *ngIf="companyForm.get('email')?.hasError('required')">Email is required.</div>
-          <div *ngIf="companyForm.get('email')?.hasError('email')">Invalid email format.</div>
-          <div *ngIf="companyForm.get('email')?.hasError('emailExists')">Email already exists</div>
-        </div>
-      </div>
-  </div>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col">
+            <div class="form-group" formGroupName="company">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" formControlName="name">
+              <div class="error" *ngIf="hasError('company.name', 'required') && companyForm.get('company.name')?.touched">
+                Name is required.
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group" formGroupName="company">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" formControlName="email">
+              <div class="error" *ngIf="hasError('company.email', 'required') && companyForm.get('company.email')?.touched">
+                Email is required.
+              </div>
+              <div class="error" *ngIf="hasError('company.email', 'email') && companyForm.get('company.email')?.touched">
+                Invalid email format.
+              </div>
+              <div class="error" *ngIf="hasError('company.email', 'emailExists') && companyForm.get('company.email')?.touched">
+                Email already exists.
+              </div>
+              </div>
+          </div>
+    
   <div class="col">
       <div class="form-group" formGroupName="company">
         <label for="phone">Phone</label>
         <input type="tel" class="form-control" id="phone" formControlName="phone" >
-        <div *ngIf="companyForm.get('phone')?.invalid && companyForm.get('phone')?.touched" class="invalid-feedback">
-          Phone Number is required
+        <div class="error" *ngIf="hasError('company.phone', 'required') && companyForm.get('company.phone')?.touched">
+          Phone Number is required.
         </div>
       </div>
   </div>

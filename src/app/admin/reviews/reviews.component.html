@@ -1,0 +1,43 @@
+<div class="container-fluid">
+<div class="row">
+    <div class="col-md-2">
+        <p-dropdown 
+  [options]="statusOptions" 
+  [(ngModel)]="selectedStatus" 
+  (onChange)="filterReviews()" 
+  placeholder="Select Status">
+</p-dropdown>
+    </div>
+</div>
+</div>
+
+
+<p-table [value]="reviews" [paginator]="true" [rows]="10" [loading]="loading" [responsive]="true">
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Company</th>
+      <th>Comment</th>
+      <th>Rating</th>
+      <th>Status</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-review>
+    <tr>
+      <td>{{ review.company_name }}</td>
+      <td>{{ review.comment }}</td>
+      <td>
+        <span class="p-column-title">Reviews</span>
+        <p-rating 
+          [(ngModel)]="review.rating" 
+          [readonly]="true" 
+          [cancel]="false" class="gold-rating">
+        </p-rating>
+      </td>
+      <td>
+        <span *ngIf="review.status == 1">Pending</span>
+        <span *ngIf="review.status == 2">Approved</span>
+        <span *ngIf="review.status == 3">Rejected</span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

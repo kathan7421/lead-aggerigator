@@ -11,7 +11,7 @@ import { User } from '../user/user.model';
 export class CompanyserviceService {
   private apiUrl = `${environment.apibaseUrl}company`;
   constructor(private http: HttpClient) { }
-  logoPreview: any;
+  // logoPreview: any;
   getCompany(): Observable<{ data: Company[] }> {
     return this.http.get<{ data: Company[] }>(this.apiUrl);
   }

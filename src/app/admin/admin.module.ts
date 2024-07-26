@@ -16,6 +16,13 @@ import { CompanyviewComponent } from './company/companyview/companyview.componen
 import { TableModule } from 'primeng/table';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { UserComponent } from './user/user.component';
+import { InquiryComponent } from './inquiry/inquiry.component';
+import { CalendarModule } from 'primeng/calendar';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { PusherserviceService } from './pusherservice.service';
+import { DropdownModule } from 'primeng/dropdown';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { RatingModule } from 'primeng/rating';
 // import { CompanyRoutingModule } from './company/company.routing.module';
 @NgModule({
   declarations: [
@@ -26,6 +33,8 @@ import { UserComponent } from './user/user.component';
   //  CompanyeditComponent,
   //  CompanyviewComponent,
    UserComponent,
+  InquiryComponent,
+  ReviewsComponent,
   //  CmsComponent,
   ],
   imports: [
@@ -38,6 +47,10 @@ import { UserComponent } from './user/user.component';
     TableModule,
     InputSwitchModule,
     TooltipModule,
+    CalendarModule,
+    MultiSelectModule,
+    DropdownModule,
+    RatingModule
   ]
 })
 export class AdminModule { }

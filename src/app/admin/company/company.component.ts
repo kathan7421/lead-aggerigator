@@ -154,6 +154,8 @@ exportCsv() {
   document.body.appendChild(downloadLink);
   downloadLink.click();
   document.body.removeChild(downloadLink);
+  this.toastr.success('Companies exported successfully.');
+  this.selectedCompanies = [];
 }
 
 private convertToCSV(data: any[]) {
@@ -284,7 +286,7 @@ private convertToCSV(data: any[]) {
             this.companies = this.companies.filter(company => !companyIds.includes(company.id));
             this.selectedCompanies = [];
             Swal.fire('Deleted!', 'The selected companies have been deleted.', 'success');
-            this.getall();
+            this.loadCompany();
           },
           error => {
             console.error('Error deleting companies:', error);
