@@ -1,22 +1,35 @@
+<div class="d-flex ch" style="height: 41px;">
 <button class="btn btn-danger" (click)="deleteSelectedCompanies()" pTooltip="Bulk Delete Company" tooltipPosition="top" >
     <i class="fas fa-trash"></i>
    </button>
 <button class="btn btn-warning" pTooltip="Export Inquiry" tooltipPosition="top" (click)="exportCsv()"><i class='fas fa-file-export'></i></button>
-<button *ngIf="inquiries.length === 0" (click)="restoreAll()" class="btn btn-primary" style="margin-bottom: 10px;">
+<button *ngIf="inquiries.length === 0" (click)="restoreAll()" class="btn btn-primary">
     Restore All
   </button>
-<p-calendar [(ngModel)]="startDate" placeholder="Start Date"></p-calendar>
-<p-calendar [(ngModel)]="endDate" placeholder="End Date"></p-calendar>
-<button class="btn btn-info" (click)="filterInquiries()">Search</button>
-<p-multiSelect [options]="companies" [(ngModel)]="selectedCompanies" optionLabel="name" placeholder="Select Companies"></p-multiSelect>
+<p-calendar [(ngModel)]="startDate" placeholder="Start Date" class="ms-2 lead-m "></p-calendar>
+<p-calendar [(ngModel)]="endDate" placeholder="End Date" class="ms-2 lead-m"></p-calendar>
+
+<button class="btn btn-info ms-2" (click)="filterInquiries()">Search</button>
+<p-multiSelect [options]="companies" [(ngModel)]="selectedCompanies" optionLabel="name" placeholder="Select Companies" class="ms-2 h-5"></p-multiSelect>
 
 
-<button class="btn btn-primary" (click)="sendInquiries()">Send Inquiry</button>
+<button class="btn btn-primary ms-2" (click)="sendInquiries()">Send Inquiry</button>
 
-
-<p-table  [value]="filteredInquiries" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name', 'status']"
+</div>
+<p-table #dt2  [value]="filteredInquiries" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name', 'status']"
          [(selection)]="selectedInquiry" selectionMode="checkbox">
-  
+         <ng-template pTemplate="caption">
+          <div class="flex">
+              <div class="p-input-icon-right">
+                  <i class="pi pi-search"></i>
+                  <input 
+                    pInputText 
+                    type="text" 
+                    (input)="filterGlobal($event)" 
+                    placeholder="Search keyword" />
+              </div>
+          </div>
+      </ng-template>
   <!-- Table Header -->
   <ng-template pTemplate="header">
     <tr>

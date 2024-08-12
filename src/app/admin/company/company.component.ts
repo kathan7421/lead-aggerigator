@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { ActivatedRoute,NavigationEnd,Router } from '@angular/router';
 import { CompanyserviceService } from './companyservice.service';
@@ -10,6 +10,7 @@ import { ConfirmationService } from 'primeng/api';
 import { Subscription, filter } from 'rxjs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CompanyUploadService } from './company-upload.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-company',
@@ -22,6 +23,7 @@ export class CompanyComponent implements OnInit{
 
   constructor( private fb: FormBuilder, private uploadService: CompanyUploadService,private router:Router,private route: ActivatedRoute, private confirmationService: ConfirmationService,private company:CompanyserviceService,private authService:AuthService,public toastr: ToastrService,) {
   }
+  @ViewChild('dt2') dt2!: Table;
   companies: Company[] = []; 
   selectedCompanies: any[] = [];
   companyCount: number = 0;
@@ -59,7 +61,11 @@ export class CompanyComponent implements OnInit{
   showUploadDialog() {
     this.displayUploadDialog = true;
   }
-
+  filterGlobal(event: Event): void {
+    // Ensure `event.target` is an HTMLInputElement
+    const input = event.target as HTMLInputElement;
+    this.dt2.filterGlobal(input.value, 'contains');
+  }
   onFileChange(event: any) {
     const file = event.files[0]; // PrimeNG FileUpload event
     if (file && (file.type === 'application/vnd.ms-excel' || file.type === 'text/csv')) {

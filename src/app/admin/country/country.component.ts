@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CountryService } from './country.service';
 import { ChangeStatusResponse, Country } from './country.model'; 
@@ -7,12 +7,14 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from 'src/app/auth-service.service';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-country',
   templateUrl: './country.component.html',
   styleUrls: ['./country.component.css']
 })
 export class CountryComponent implements OnInit {
+  @ViewChild('dt2') dt2!: Table;
   countryForm!: FormGroup;
   imagePreviewUrl: string | ArrayBuffer = ''; // Initialize with an empty string
   isEditMode: boolean = false;
@@ -53,6 +55,14 @@ onFileChange(event: any) {
       reader.readAsDataURL(file);
     }
   }
+  filterGlobal(event: Event): void {
+    // Ensure `event.target` is an HTMLInputElement
+    const input = event.target as HTMLInputElement;
+    this.dt2.filterGlobal(input.value, 'contains');
+  }
+  
+  
+
 openEditDialog(countryId: number) {
     this.countryService.getCountryById(countryId).subscribe(
       (response: { data: Country }) => {

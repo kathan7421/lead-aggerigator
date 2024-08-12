@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CmsserviceService } from './cmsservice.service';
 import { ToastrService } from 'ngx-toastr';
@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/auth-service.service';
 import { Cms } from './cms.model';
 import Swal from 'sweetalert2';
 import { ActivatedRoute } from '@angular/router';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-cms',
@@ -13,6 +14,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./cms.component.css']
 })
 export class CmsComponent implements OnInit {
+  @ViewChild('dt2') dt2!: Table;
+
   isEditMode: boolean = false;
   displayDialog: boolean = false;
   cmsForm!: FormGroup;
@@ -52,7 +55,11 @@ export class CmsComponent implements OnInit {
     this.isEditMode = false;
     this.cmsForm.reset();
   }
-
+  filterGlobal(event: Event): void {
+    // Ensure `event.target` is an HTMLInputElement
+    const input = event.target as HTMLInputElement;
+    this.dt2.filterGlobal(input.value, 'contains');
+  }
   openEditDialog(cmsId: number) {
     this.cmsService.getCmsById(cmsId).subscribe(
       (response: { data: Cms }) => {

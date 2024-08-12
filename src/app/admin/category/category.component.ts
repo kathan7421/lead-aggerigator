@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoryService } from './category-service.service';
 import { AuthService } from 'src/app/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
@@ -7,6 +7,8 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { SelectItem } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
+import { Table } from 'primeng/table';
+
 
 @Component({
   selector: 'app-category',
@@ -14,6 +16,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
+  @ViewChild('dt2') dt2!: Table;
   categories: any[] = [];
   selectedCategories: any[] = [];
   editingCategory: any;
@@ -85,7 +88,11 @@ export class CategoryComponent implements OnInit {
     }
   }
   
-  
+  filterGlobal(event: Event): void {
+    // Ensure `event.target` is an HTMLInputElement
+    const input = event.target as HTMLInputElement;
+    this.dt2.filterGlobal(input.value, 'contains');
+  }
   
   
 

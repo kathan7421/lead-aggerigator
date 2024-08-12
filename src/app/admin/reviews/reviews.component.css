@@ -1,0 +1,16 @@
+
+/* Adjust the height of the dropdown panel */
+.ui-dropdown-panel {
+    max-height: 200px; /* Set your desired maximum height */
+    overflow-y: auto; /* Enable scrolling if the content exceeds the height */
+  }
+  /* Adjust the height of the dropdown items */
+  .ui-dropdown-item {
+    line-height: 1.5; /* Adjust as needed for better spacing */
+  }
+.btn {
+    margin-right: 5px;
+}
+.custom-dropdown {
+  width: 100% !important;
+}

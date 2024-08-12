@@ -25,7 +25,20 @@
 
 
 
-  <p-table [value]="countries" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']"  [(selection)]="selectCountry" selectionMode="checkbox">
+  <p-table #dt2 [value]="countries" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']"  [(selection)]="selectCountry" selectionMode="checkbox">
+    <ng-template pTemplate="caption">
+      <div class="flex">
+          <div class="p-input-icon-right">
+              <i class="pi pi-search"></i>
+              <input 
+                pInputText 
+                type="text" 
+                (input)="filterGlobal($event)" 
+                placeholder="Search keyword" />
+          </div>
+      </div>
+  </ng-template>
+
     <ng-template pTemplate="header">
         <tr>
           <th style="width: 3rem">
@@ -50,7 +63,7 @@
             <td>{{ country.id }}</td>
             <td>{{ country.name }}</td>
             <td>{{ country.description }}</td>
-            <td><img [src]="country.image" alt="Country Image"></td>
+            <td><img [src]="country.image" class="c-img" alt="Country Image"></td>
            
             <td>
                 <p-inputSwitch class="switch" [ngModel]="country.status === '1'" (onChange)="changeCountryStatus(country.id, $event.checked)"></p-inputSwitch>

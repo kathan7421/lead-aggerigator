@@ -77,8 +77,21 @@
 
 
 
-<p-table [value]="banners" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['title', 'description']"  [(selection)]="selectedBanners" selectionMode="checkbox">
-    <ng-template pTemplate="header">
+<p-table #dt2 [value]="banners" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['title', 'description']"  [(selection)]="selectedBanners" selectionMode="checkbox">
+  <ng-template pTemplate="caption">
+    <div class="flex">
+        <div class="p-input-icon-right">
+            <i class="pi pi-search"></i>
+            <input 
+              pInputText 
+              type="text" 
+              (input)="filterGlobal($event)" 
+              placeholder="Search keyword" />
+        </div>
+    </div>
+</ng-template>
+
+  <ng-template pTemplate="header">
       <tr>
         <th style="width: 3rem">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -101,7 +114,7 @@
         <td>{{ banner.id }}</td>
         <td>{{ banner.title }}</td>
         <td>{{ banner.description }}</td>
-        <td><img [src]="banner.image" alt="Banner Image" style="max-height: 100px;"></td>
+        <td><img [src]="banner.image" alt="Banner Image" class="c-img" ></td>
         <td>
             <p-inputSwitch class="switch" [ngModel]="banner.status === '1'" (onChange)="changeBannerStatus(banner.id, $event.checked)"></p-inputSwitch>
         </td>

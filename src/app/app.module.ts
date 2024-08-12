@@ -46,6 +46,8 @@ import { AdminModule } from './admin/admin.module';
 import { SharedModule } from './shared/shared.module';
 import { CmsComponent } from './admin/cms/cms.component';
 import { CompanyModule } from './admin/company/company.module';
+// import { InputTextModule } from 'primeng/inputtext';
+
 // import { SharedModule } from 'primeng/api';
 
 @NgModule({
@@ -95,6 +97,7 @@ import { CompanyModule } from './admin/company/company.module';
     AdminModule,
     SharedModule,
     CompanyModule,
+    
    
     
   ],

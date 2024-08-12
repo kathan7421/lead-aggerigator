@@ -19,6 +19,7 @@ import { LocationSelectorComponent } from './location/location.component';
 import { HttpClientModule } from '@angular/common/http';
 
 
+
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -29,6 +30,7 @@ import { HttpClientModule } from '@angular/common/http';
     LayoutComponent,
     AdminFooterComponent,
     LocationSelectorComponent,
+ 
     // Other shared components if any
   ],
   imports: [

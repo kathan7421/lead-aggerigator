@@ -1,0 +1,21 @@
+/* Ensure the slider container and items are styled correctly */
+.slider {
+    width: 100% !important;
+  }
+  
+  .slider img {
+    width: 100% !important;
+    display: block;
+    height: 750px;
+    object-fit: fill;
+  }
+  .slick-next:before {
+    content: '→';
+    top: 8px;
+    left: 5px;
+}
+/* .slick-previous:before {
+    content: '→';
+    top: 8px;
+    left: 5px;
+} */

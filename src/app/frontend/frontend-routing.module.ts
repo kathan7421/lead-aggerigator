@@ -3,7 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { FrontLayoutComponent } from '../shared/front-layout/front-layout.component';
 import { CmspagesComponent } from './cmspages/cmspages.component';
-import { NotFoundComponent } from '../admin/not-found/not-found.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { CmsPageResolver } from './cmspages/cmspages.resolver';
 
 
 const routes: Routes = [
@@ -13,7 +14,9 @@ const routes: Routes = [
     children: [
       { path: '', component: HomeComponent },
       { path: 'home', component: HomeComponent },
-      { path: ':slug', component: CmspagesComponent  },
+      { path: ':slug', component: CmspagesComponent ,resolve: { cmsPages: CmsPageResolver } },
+
+      // { path: '**', component: NotFoundComponent }
      
       // other frontend routes...
     ]

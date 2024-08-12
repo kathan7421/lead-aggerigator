@@ -45,38 +45,51 @@
 
 <!-- data grid table  -->
 <div>
-<p-table [value]="categories" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [(selection)]="selectedCategories"  selectionMode="checkbox" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
-    <ng-template pTemplate="header">
-        <tr>
-            <th style="width: 3rem">
-                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-              </th>
-            <th>Index</th>
-            <th pSortableColumn="id">Category ID <p-sortIcon field="id"></p-sortIcon></th>
-            <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
-            <th>Image</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-category let-i="rowIndex">
-        <tr>
-            <td>
-                <p-tableCheckbox [value]="category"></p-tableCheckbox>
-              </td>
-            <td>{{ i + 1 }}</td>
-            <td>{{ category.id }}</td>
-            <td>{{ category.name }}</td>
-            <img [src]="category.image" alt="Category Image">
-
-            <td>
-                <p-inputSwitch class="switch" [ngModel]="category.status === '0'" (onChange)="onToggleChange(category.id, $event.checked)"></p-inputSwitch>
-            </td>
-            <td>
-                <button class="btn btn-primary" (click)="openEditDialog(category.id)"><i class="fas fa-edit"></i></button>
-                <button class="btn btn-danger" (click)="deleteCategory(category.id)"><i class="fas fa-trash"></i></button>
-            </td>
-        </tr>
-    </ng-template>
-</p-table>
-</div>
+    <p-table #dt2 [value]="categories" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [(selection)]="selectedCategories" selectionMode="checkbox" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']">
+        <ng-template pTemplate="caption">
+            <div class="flex">
+                <div class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input 
+                      pInputText 
+                      type="text" 
+                      (input)="filterGlobal($event)" 
+                      placeholder="Search keyword" />
+                </div>
+            </div>
+        </ng-template>
+    
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 3rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                  </th>
+                <th>Index</th>
+                <th pSortableColumn="id">Category ID <p-sortIcon field="id"></p-sortIcon></th>
+                <th pSortableColumn="name">Name<p-sortIcon field="name"></p-sortIcon></th>
+                <th>Image</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-category let-i="rowIndex">
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="category"></p-tableCheckbox>
+                  </td>
+                <td>{{ i + 1 }}</td>
+                <td>{{ category.id }}</td>
+                <td>{{ category.name }}</td>
+                <img [src]="category.image" alt="Category Image">
+    
+                <td>
+                    <p-inputSwitch class="switch" [ngModel]="category.status === '0'" (onChange)="onToggleChange(category.id, $event.checked)"></p-inputSwitch>
+                </td>
+                <td>
+                    <button class="btn btn-primary" (click)="openEditDialog(category.id)"><i class="fas fa-edit"></i></button>
+                    <button class="btn btn-danger" (click)="deleteCategory(category.id)"><i class="fas fa-trash"></i></button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    

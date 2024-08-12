@@ -20,7 +20,7 @@ export class AppComponent {
 
   ngAfterViewInit() {
     // Initialize Bootstrap tooltips
-    $('[data-toggle="tooltip"]').tooltip();
+    // $('[data-toggle="tooltip"]').tooltip();
   }
   ngOnInit() {
     this.router.events.pipe(

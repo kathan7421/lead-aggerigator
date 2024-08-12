@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 // import { CommonModule } from '@angular/common';
+import { InputTextModule } from 'primeng/inputtext';
+import { PrimeIcons } from 'primeng/api';
 import { TooltipModule } from 'primeng/tooltip';
 import { AdminRoutingModule } from './admin-routing.module';
 import { CommonModule } from '@angular/common';
@@ -23,6 +25,8 @@ import { PusherserviceService } from './pusherservice.service';
 import { DropdownModule } from 'primeng/dropdown';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { RatingModule } from 'primeng/rating';
+
+
 // import { CompanyRoutingModule } from './company/company.routing.module';
 @NgModule({
   declarations: [
@@ -50,7 +54,9 @@ import { RatingModule } from 'primeng/rating';
     CalendarModule,
     MultiSelectModule,
     DropdownModule,
-    RatingModule
+    RatingModule,
+    InputTextModule,
+    
   ]
 })
 export class AdminModule { }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DialogService } from 'primeng/dynamicdialog';
 import { BannersService } from './banners.service';
@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth-service.service';
 import Swal from 'sweetalert2';
 import { error } from 'jquery';
 import { ActivatedRoute } from '@angular/router';
+import { Table } from 'primeng/table';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./banners.component.css']
 })
 export class BannersComponent implements OnInit {
+  @ViewChild('dt2') dt2!: Table;
   bannerForm! : FormGroup;
   banners: Banners[] = [];
   selectedBanners: any[] =[];
@@ -78,6 +80,12 @@ ngOnInit(): void {
       }
     );
   }
+  filterGlobal(event: Event): void {
+    // Ensure `event.target` is an HTMLInputElement
+    const input = event.target as HTMLInputElement;
+    this.dt2.filterGlobal(input.value, 'contains');
+  }
+  
   getAllBanners(){
     this.bannerService.getBanners().subscribe(res => {
       this.banners = res.banners;

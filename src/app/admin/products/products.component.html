@@ -55,8 +55,21 @@
           
     </form>
 </p-dialog>
-<p-table [value]="products"  dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']" [(selection)]="selectedProducts" selectionMode="checkbox">
-    <ng-template pTemplate="header"  >
+<p-table #dt2 [value]="products"  dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']" [(selection)]="selectedProducts" selectionMode="checkbox">
+  <ng-template pTemplate="caption">
+    <div class="flex">
+        <div class="p-input-icon-right">
+            <i class="pi pi-search"></i>
+            <input 
+              pInputText 
+              type="text" 
+              (input)="filterGlobal($event)" 
+              placeholder="Search keyword" />
+        </div>
+    </div>
+</ng-template>
+
+  <ng-template pTemplate="header"  >
       <tr>
         <th style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
@@ -80,7 +93,7 @@
         <td>{{ product.id }}</td> <!-- Assuming 'id' is a property of your Product model -->
         <td>{{ product.name }}</td>
         <td>
-          <img [src]="product.image" alt="Product Image">
+          <img [src]="product.image" class="c-img" alt="Product Image">
         </td>
         <td>
           <p-inputSwitch class="switch" [ngModel]="product.status === '0'" (onChange)="changeProductStatus(product.id, $event.checked)"></p-inputSwitch>

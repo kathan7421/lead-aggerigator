@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { InquiryService } from './inquiry.service';
 import { Inquiry } from './inquiry.model';
 import { ToastrService } from 'ngx-toastr';
@@ -9,6 +9,7 @@ import { error } from 'jquery';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Company } from '../company/company.model';
 import { CompanyserviceService } from '../company/companyservice.service';
+import { Table } from 'primeng/table';
 
 
 
@@ -18,6 +19,7 @@ import { CompanyserviceService } from '../company/companyservice.service';
   styleUrls: ['./inquiry.component.css']
 })
 export class InquiryComponent implements OnInit {
+  @ViewChild('dt2') dt2!: Table;
   inquiries: Inquiry[] = [];
   selectedInquiry: Inquiry[] = [];
   loading: boolean = true;
@@ -280,7 +282,11 @@ export class InquiryComponent implements OnInit {
     // Determine if the inquiry can be restored
     return this.inquiries.some(i => i.id === id && i.status === true);
   }
-
+  filterGlobal(event: Event): void {
+    // Ensure `event.target` is an HTMLInputElement
+    const input = event.target as HTMLInputElement;
+    this.dt2.filterGlobal(input.value, 'contains');
+  }
   restoreAll(): void {
     const inquiryIds = this.inquiries.filter(i => i.status === true).map(i => i.id);
     this.inquiryService.restoreAll(inquiryIds.length > 0 ? inquiryIds : undefined).subscribe(

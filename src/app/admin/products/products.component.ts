@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit ,ViewChild } from '@angular/core';
 import { DialogService } from 'primeng/dynamicdialog';
 import { FileUploadModule } from 'primeng/fileupload';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -10,6 +10,7 @@ import { Category ,CategoryResponse} from '../category/category.model';
 import Swal from 'sweetalert2';
 import { SelectItem } from 'primeng/api';
 import { ActivatedRoute } from '@angular/router';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-products',
@@ -17,6 +18,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
+  @ViewChild('dt2') dt2!: Table;
+
   products: Product[] = [];
   selectedProducts: any[] = [];
   product!: Product;
@@ -58,6 +61,12 @@ loadCategories(): void {
     }
   );
 }
+filterGlobal(event: Event): void {
+  // Ensure `event.target` is an HTMLInputElement
+  const input = event.target as HTMLInputElement;
+  this.dt2.filterGlobal(input.value, 'contains');
+}
+
 onFileChange(event: any): void {
   const files = event.target.files;
   const file = files[0];

@@ -27,8 +27,20 @@
   <button class="btn btn-warning" pTooltip="Export Company" tooltipPosition="top" (click)="exportCsv()"><i class='fas fa-file-export'></i></button>
   
 
-  <p-table [value]="companies" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name', 'status']"
+  <p-table #dt2 [value]="companies" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10, 25, 50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name', 'status']"
            [(selection)]="selectedCompanies"  selectionMode="checkbox">
+           <ng-template pTemplate="caption">
+            <div class="flex">
+                <div class="p-input-icon-right">
+                    <i class="pi pi-search"></i>
+                    <input 
+                      pInputText 
+                      type="text" 
+                      (input)="filterGlobal($event)" 
+                      placeholder="Search keyword" />
+                </div>
+            </div>
+        </ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 3rem">
@@ -51,7 +63,7 @@
         <td>{{ i + 1 }}</td>
         <td>{{ company.name }}</td>
         <td>{{ company.description }}</td>
-        <td><img [src]="company.logo" alt="Company Image"></td>
+        <td><img [src]="company.logo" class="c-img" alt="Company Image"></td>
         <td>
           <p-inputSwitch class="switch" [ngModel]="company.status" (onChange)="changeCountryStatus(company.user_id, $event.checked)"></p-inputSwitch>
            <!-- {{company.status}}  -->

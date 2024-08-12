@@ -40,8 +40,21 @@
   </form>
 </p-dialog>
 
-<p-table [value]="cms" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']"  [(selection)]="selectedCmspage" selectionMode="checkbox">
-    <ng-template pTemplate="header">
+<p-table #dt2  [value]="cms" dataKey="id" [rowHover]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[10,25,50]" [paginator]="true" [filterDelay]="0" [globalFilterFields]="['name','status']"  [(selection)]="selectedCmspage" selectionMode="checkbox">
+  <ng-template pTemplate="caption">
+    <div class="flex">
+        <div class="p-input-icon-right">
+            <i class="pi pi-search"></i>
+            <input 
+              pInputText 
+              type="text" 
+              (input)="filterGlobal($event)" 
+              placeholder="Search keyword" />
+        </div>
+    </div>
+</ng-template>
+
+  <ng-template pTemplate="header">
         <tr>
           <th style="width: 3rem">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>

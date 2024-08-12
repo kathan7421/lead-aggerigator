@@ -13,6 +13,7 @@ export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
   loading = false;
   error = '';
+  passwordFieldType: string = 'password';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -32,12 +33,13 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    this.loginForm.markAllAsTouched();
     this.loading = true;
     if (this.loginForm.invalid) {
       this.loading = false;
       return;
     }
-
+    
     const email = this.loginForm.value.email;
     const password = this.loginForm.value.password;
 
@@ -60,5 +62,8 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+  togglePasswordVisibility(): void {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 }

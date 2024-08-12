@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CmspagesService } from './cmspages.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import * as he from 'he'; // Import he library for decoding HTML entities
 
@@ -14,21 +13,23 @@ export class CmspagesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private cmsService: CmspagesService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router: Router // Import Router for navigation
   ) {}
 
   ngOnInit(): void {
-    const slug = this.route.snapshot.paramMap.get('slug');
-    this.cmsService.getCmsPage(slug!).subscribe(data => {
-      console.log(data.content); // Log to check the content received
-      const cleanedContent = this.cleanHtml(data.content); // Clean HTML content
-      const decodedContent = he.decode(cleanedContent); // Decode HTML entities
+    const data = this.route.snapshot.data['cmsPages']; // Ensure this matches the resolver key
+    if (data) {
+      // Clean and decode HTML content
+      const cleanedContent = this.cleanHtml(data.content);
+      const decodedContent = he.decode(cleanedContent);
       this.cmsPage = {
         title: data.title,
         content: this.sanitizer.bypassSecurityTrustHtml(decodedContent)
       };
-    });
+    } else {
+      this.router.navigate(['/not-found']);
+    }
   }
 
   cleanHtml(dirtyHtml: string): string {

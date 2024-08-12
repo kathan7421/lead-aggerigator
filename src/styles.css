@@ -4,6 +4,11 @@
 @import "../node_modules/quill/dist/quill.core.css";
 @import "../node_modules/quill/dist/quill.snow.css";
 
+
+html ,body {
+  overflow-x: hidden !important;
+}
+
 .switch .p-inputswitch-slider {
     background-color: red !important;
 }
@@ -29,7 +34,11 @@ section.content {
     height: 200px;
     background: #aaa;
   }
-
+  /* .slick-slide img {
+    display: block;
+    width: 100% !important;
+    height: 740px !important;
+} */
   .btn-primary {
     color: #fff;
     background-color: #007bff;
@@ -73,16 +82,155 @@ section.content {
     color: #ffffff;
   }
   
-  .tooltip-inner {
+.tooltip-inner {
     padding: 5px; /* Set the padding for the tooltip content */
   }
-  .gold-rating .p-rating-star {
+.gold-rating .p-rating-star {
     color: gold !important;
   }
   
-  .gold-rating .p-rating .p-rating-icon {
+.gold-rating .p-rating .p-rating-icon {
     color: gold !important;
   }
-  .p-rating .p-rating-icon.pi-star-fill {
+.p-rating .p-rating-icon.pi-star-fill {
     color: gold !important;
+}
+.p-input-icon-right {
+    position: relative;
+  }
+  
+.p-input-icon-right .pi {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+  }
+  
+.p-input-icon-right input {
+    padding-right: 2.5rem !important; /* Adjust padding to accommodate the icon */
+  }
+.pi-search {
+    position: absolute;
+    top: 29px !important;
+}
+.p-datatable-header.ng-star-inserted {
+    margin-top: 10px !important;
+}
+  /* Custom styles for dropdown items */
+.ui-dropdown-item.pending {
+    background-color: #f1c40f !important; /* Yellow for Pending */
+    color: #fff; /* White text */
+  }
+  
+  .ui-dropdown-item.approved {
+    background-color: #2ecc71 !important; /* Green for Approved */
+    color: #fff; /* White text */
+  }
+  
+  .ui-dropdown-item.rejected {
+    background-color: #e74c3c !important; /* Red for Rejected */
+    color: #fff; /* White text */
+  }
+  .dropdown-width {
+    width: 150px !important; /* Adjust width as needed */
+  }
+ 
+img.no-img{
+    width: 100% !important;
+    height: 500px !important;
+    object-fit: contain !important;
+}
+.no-p{
+        font-size: 40px;
+        text-align: center;
+}
+.p-dropdown {
+    display: inline-flex;
+    cursor: pointer;
+    position: relative;
+    -webkit-user-select: none;
+    user-select: none;
+    width: auto !important;
+}
+.c-img {
+    height: 47px !important;
+    width: 47px !important;
+    padding: 0 !important;
+    object-fit: fill;
+    border-radius: 30px;
+}
+.ch .p-multiselect .p-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 255px !important;
+}
+.ch .p-multiselect-filter-icon {
+    position: absolute;
+    top: 50%;
+    margin-top: -15px !important;
+}
+.custom-dropdown {
+  width: 100% !important;
+}
+.slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 60%;
+  left: 97% !important;
+  display: block !important;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  transform: translate(0, -50%);
+  cursor: pointer;
+  color: black;
+  border: none;
+  padding: 20px;
+  outline: none;
+  background: red;
+}
+.slick-prev {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 60%;
+  display: block !important;
+  width: 20px;
+  z-index: 999;
+  left: 21px !important;
+  height: 20px;
+  padding: 0;
+  transform: translate(0, -50%);
+  cursor: pointer;
+  color: #040404;
+  border: none;
+  outline: none;
+  background: black;
+}
+.slick-prev:before, .slick-next:before {
+  font-family: 'slick';
+  font-size: 45px !important;
+  line-height: 1;
+  opacity: .75;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.slick-prev, .slick-next {
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  top: 54% !important;
+  display: block;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  transform: translate(0, -50%);
+  cursor: pointer;
+  color: transparent;
+  border: none;
+  outline: none;
+  background: transparent;
 }
